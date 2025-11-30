@@ -68,7 +68,15 @@
     <div class="row mb-4">
         <div class="col-12 text-center">
             <h1 class="dashboard-title mb-2"><i class="fas fa-user-shield me-2 text-primary"></i>Panel de Administración</h1>
-            <span class="dashboard-badge">Administrador</span>
+            @{
+                string rol = "";
+                if (User.IsInRole("Administrador")) { rol = "Administrador"; }
+                else if (User.IsInRole("Recepcionista")) { rol = "Recepcionista"; }
+                else if (User.IsInRole("Gerente")) { rol = "Gerente"; }
+                else if (User.IsInRole("Empleado")) { rol = "Empleado"; }
+                else { rol = "Usuario"; }
+            }
+            <span class="dashboard-badge">@rol</span>
             <p class="text-muted mt-2">Accede a la gestión completa del hotel, visualiza estadísticas, administra usuarios, habitaciones, reservas y más.</p>
         </div>
     </div>
