@@ -1,0 +1,56 @@
+/* Panel de login/registro/perfil moderno */
+.login-panel {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1.5px 4px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin: 2rem 0;
+  min-width: 320px;
+}
+.login-panel .form-floating > label {
+  color: #6c757d;
+}
+.login-panel .btn-primary {
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+  border: none;
+}
+.login-panel .btn-outline-primary {
+  border-color: #007bff;
+  color: #007bff;
+}
+.login-panel .btn-outline-primary:hover {
+  background: #007bff;
+  color: #fff;
+}
+.login-panel i {
+  opacity: 0.85;
+}
+.login-panel .text-muted {
+  font-size: 1rem;
+}
+.login-panel .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.15);
+}
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}

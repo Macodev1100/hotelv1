@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-light fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle me-1"></i>@User.Identity?.Name
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="min-width: 210px; background: #003366;">
+            <li>
+                <a class="dropdown-item py-3 px-4 d-flex align-items-center gap-2 text-white" style="background: #005fa3; font-weight: 600; border-radius: 0.5rem 0.5rem 0 0;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Configuración">
+                    <i class="fas fa-cog text-warning"></i>Configuración
+                </a>
+            </li>
+            <li><hr class="dropdown-divider m-0" style="border-color: #005fa3;" /></li>
+            <li>
+                <form class="form-inline p-0 m-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="dropdown-item py-3 px-4 d-flex align-items-center gap-2 text-danger fw-semibold border-0 w-100" style="background: #003366;">
+                        <i class="fas fa-sign-out-alt"></i>Cerrar sesión
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">
+            <i class="fas fa-user-plus me-1"></i>Registrarse
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">
+            <i class="fas fa-sign-in-alt me-1"></i>Iniciar sesión
+        </a>
+    </li>
+}
+</ul>

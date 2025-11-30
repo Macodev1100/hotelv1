@@ -1,0 +1,29 @@
+@model List<hotelv1.Models.Entities.Servicio>
+@{
+    ViewData["Title"] = "Servicios";
+}
+<h2>Servicios</h2>
+<a href="/Servicios/Create" class="btn btn-primary mb-2">Nuevo Servicio</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var servicio in Model)
+    {
+        <tr>
+            <td>@servicio.Nombre</td>
+            <td>@servicio.Descripcion</td>
+            <td>@servicio.Precio.ToString("C")</td>
+            <td>
+                <a href="/Servicios/Edit/@servicio.ServicioId" class="btn btn-sm btn-warning">Editar</a>
+                <a href="/Servicios/Delete/@servicio.ServicioId" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

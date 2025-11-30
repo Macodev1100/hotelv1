@@ -1,0 +1,25 @@
+@model hotelv1.Models.Entities.Factura
+@{
+    ViewData["Title"] = "Detalle Factura";
+}
+<div class="container py-4">
+    <div class="card shadow-sm col-md-6 mx-auto">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>Detalle de la Factura</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Reserva</dt>
+                <dd class="col-sm-8">@Model.ReservaId</dd>
+                <dt class="col-sm-4">Fecha Emisión</dt>
+                <dd class="col-sm-8">@Model.FechaEmision.ToShortDateString()</dd>
+                <dt class="col-sm-4">Monto Total</dt>
+                <dd class="col-sm-8">@Model.MontoTotal.ToString("C")</dd>
+                <dt class="col-sm-4">Detalle</dt>
+                <dd class="col-sm-8">@Model.Detalle</dd>
+            </dl>
+            <a href="/Facturas/Edit/@Model.FacturaId" class="btn btn-warning me-2"><i class="fas fa-edit"></i> Editar</a>
+            <a href="/Facturas" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+</div>

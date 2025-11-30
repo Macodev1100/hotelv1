@@ -1,0 +1,125 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<style>
+    body {
+        background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+    }
+    .login-panel {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+        padding: 2.5rem 2rem 2rem 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .login-panel:before {
+        content: '';
+        position: absolute;
+        top: -60px; left: -60px;
+        width: 160px; height: 160px;
+        background: #005fa3;
+        opacity: 0.08;
+        border-radius: 50%;
+        z-index: 0;
+    }
+    .login-panel:after {
+        content: '';
+        position: absolute;
+        bottom: -60px; right: -60px;
+        width: 160px; height: 160px;
+        background: #ffd700;
+        opacity: 0.10;
+        border-radius: 50%;
+        z-index: 0;
+    }
+    .login-panel .form-control {
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+    .login-panel .btn-primary {
+        background: linear-gradient(90deg, #005fa3 0%, #ffd700 100%);
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,95,163,0.08);
+        transition: background 0.2s;
+    }
+    .login-panel .btn-primary:hover {
+        background: linear-gradient(90deg, #003366 0%, #ffd700 100%);
+    }
+    .login-panel .form-label {
+        color: #005fa3;
+    }
+    .login-panel .text-danger {
+        font-size: 0.98em;
+    }
+    .login-panel .hotel-brand {
+        font-size: 3.5rem;
+        color: #005fa3;
+        margin-bottom: 0.5rem;
+    }
+    .login-panel .brand-title {
+        font-family: 'Segoe UI', sans-serif;
+        font-weight: 800;
+        color: #003366;
+        letter-spacing: 1px;
+    }
+    .login-panel .brand-desc {
+        color: #888;
+        font-size: 1.1rem;
+    }
+    .login-panel .links a {
+        color: #005fa3;
+        font-weight: 500;
+        text-decoration: none;
+    }
+    .login-panel .links a:hover {
+        text-decoration: underline;
+        color: #003366;
+    }
+</style>
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+    <div class="login-panel col-md-5 col-lg-4 position-relative">
+        <div class="text-center mb-4 position-relative" style="z-index:1;">
+            <span class="hotel-brand"><i class="fas fa-user-plus"></i></span>
+            <h2 class="brand-title">Registrarse</h2>
+            <p class="brand-desc">Crea una cuenta para acceder al sistema hotelero</p>
+        </div>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" style="z-index:1; position:relative;">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Email">Correo electrónico</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Contraseña" />
+                <label asp-for="Input.Password">Contraseña</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirmar contraseña" />
+                <label asp-for="Input.ConfirmPassword">Confirmar contraseña</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mb-2">Registrarse</button>
+            <div class="d-flex justify-content-between links">
+                <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </form>
+        <div class="text-center mt-4" style="z-index:1; position:relative;">
+            <span class="text-muted" style="font-size:0.95em;">© 2025 HotelV1. Todos los derechos reservados.</span>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

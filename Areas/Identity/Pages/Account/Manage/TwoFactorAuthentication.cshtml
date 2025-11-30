@@ -1,0 +1,27 @@
+@page
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "Autenticación en dos pasos";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+<link rel="stylesheet" href="~/css/identity-custom.css" />
+<div class="identity-container">
+    <div class="identity-card">
+        <div class="icon mb-2"><i class="fas fa-shield-alt"></i></div>
+        <h2>Autenticación en dos pasos</h2>
+        <p class="text-muted mb-4">Protege tu cuenta con un segundo factor de autenticación</p>
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+        <form id="two-factor-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <!-- Aquí irían los controles de activación/desactivación y códigos de respaldo -->
+            <div class="mb-3 text-start">
+                <label class="form-label">Estado</label>
+                <input class="form-control" value="@Model.Is2faEnabled ? "Activado" : "Desactivado"" disabled />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Actualizar configuración</button>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
