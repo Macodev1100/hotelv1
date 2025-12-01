@@ -4,8 +4,10 @@ namespace hotelv1.ViewModels
 {
     public class FacturaViewModel
     {
-        public int FacturaId { get; set; }
+        // Para el dropdown de reservas
+        public IEnumerable<hotelv1.Models.Entities.Reserva>? Reservas { get; set; }
 
+        public int FacturaId { get; set; }
 
         [Required(ErrorMessage = "La reserva es obligatoria.")]
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione una reserva válida.")]

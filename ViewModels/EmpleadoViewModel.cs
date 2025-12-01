@@ -6,15 +6,18 @@ namespace hotelv1.ViewModels
     {
         public int EmpleadoId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$", ErrorMessage = "El nombre solo puede contener letras y espacios.")]
         [Display(Name = "Nombre")]
         public string Nombre { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "El apellido es obligatorio.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$", ErrorMessage = "El apellido solo puede contener letras y espacios.")]
         [Display(Name = "Apellido")]
         public string Apellido { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "El puesto es obligatorio.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$", ErrorMessage = "El puesto solo puede contener letras y espacios.")]
         [Display(Name = "Puesto")]
         public string Puesto { get; set; } = string.Empty;
 

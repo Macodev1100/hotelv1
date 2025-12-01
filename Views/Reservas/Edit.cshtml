@@ -37,19 +37,45 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="Total" class="form-label fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Total</label>
-                        <input asp-for="Total" class="form-control form-control-lg" placeholder="Total de la reserva" />
+                        <input asp-for="Total" class="form-control form-control-lg" placeholder="Total de la reserva" readonly id="Total" />
                         <span asp-validation-for="Total" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="Estado" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Estado</label>
-                        <input asp-for="Estado" class="form-control form-control-lg" placeholder="Ej: Confirmada, Pendiente, Cancelada" />
+                        <select asp-for="Estado" class="form-select form-select-lg">
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Pagada">Pagada</option>
+                            <option value="Cancelada">Cancelada</option>
+                        </select>
                         <span asp-validation-for="Estado" class="text-danger"></span>
+                                            <label asp-for="MetodoPago" class="form-label fw-semibold"><i class="fas fa-credit-card me-1"></i>Método de Pago</label>
+                                            <select asp-for="MetodoPago" class="form-select form-select-lg" asp-items="@(new SelectList(Model.MetodosPago))">
+                                                <option value="">Seleccione un método de pago</option>
+                                            </select>
+                                            <span asp-validation-for="MetodoPago" class="text-danger"></span>
                     </div>
                     <div class="d-flex justify-content-between mt-4">
                         <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
                         <a href="/Reservas" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
                     </div>
                 </form>
+                            <script>
+                            function calcularTotal() {
+                                var habitaciones = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Habitaciones.Select(h => new { h.HabitacionId, h.PrecioPorNoche })));
+                                var habitacionId = parseInt(document.getElementById('HabitacionId').value);
+                                var precio = habitaciones.find(h => h.HabitacionId === habitacionId)?.PrecioPorNoche || 0;
+                                var fechaEntrada = new Date(document.getElementById('FechaEntrada').value);
+                                var fechaSalida = new Date(document.getElementById('FechaSalida').value);
+                                var dias = (fechaSalida - fechaEntrada) / (1000 * 60 * 60 * 24);
+                                dias = isNaN(dias) || dias < 1 ? 1 : dias;
+                                var total = precio * dias;
+                                document.getElementById('Total').value = total.toFixed(2);
+                            }
+                            document.getElementById('HabitacionId').addEventListener('change', calcularTotal);
+                            document.getElementById('FechaEntrada').addEventListener('change', calcularTotal);
+                            document.getElementById('FechaSalida').addEventListener('change', calcularTotal);
+                            window.addEventListener('DOMContentLoaded', calcularTotal);
+                            </script>
             </div>
         </div>
     </div>

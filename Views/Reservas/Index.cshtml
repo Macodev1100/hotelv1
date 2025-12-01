@@ -18,6 +18,7 @@
                         <th><i class="fas fa-sign-out-alt"></i> Salida</th>
                         <th><i class="fas fa-dollar-sign"></i> Total</th>
                         <th><i class="fas fa-info-circle"></i> Estado</th>
+                        <th><i class="fas fa-credit-card"></i> Método de Pago</th>
                         <th class="text-end">Acciones</th>
                     </tr>
                 </thead>
@@ -31,13 +32,13 @@
                     foreach (var reserva in Model)
                     {
                         <tr>
-                            <td>@reserva.ClienteId</td>
-                            <td>@reserva.HabitacionId</td>
+                            <td>@reserva.Cliente?.Nombre</td>
+                            <td>@reserva.Habitacion?.Numero</td>
                             <td>@reserva.FechaEntrada.ToShortDateString()</td>
                             <td>@reserva.FechaSalida.ToShortDateString()</td>
                             <td>@reserva.Total.ToString("C")</td>
                             <td>
-                                @if (reserva.Estado == "Confirmado")
+                                @if (reserva.Estado == "Pagada")
                                 {
                                     <span class="badge bg-success">@reserva.Estado</span>
                                 }
@@ -50,6 +51,7 @@
                                     <span class="badge bg-secondary">@reserva.Estado</span>
                                 }
                             </td>
+                            <td>@reserva.MetodoPago</td>
                             <td class="text-end">
                                 <a href="/Reservas/Edit/@reserva.ReservaId" class="btn btn-sm btn-outline-warning me-1"><i class="fas fa-edit"></i></a>
                                 <a href="/Reservas/Delete/@reserva.ReservaId" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></a>

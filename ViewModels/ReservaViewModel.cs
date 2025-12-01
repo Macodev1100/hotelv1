@@ -5,6 +5,9 @@ namespace hotelv1.ViewModels
     // Ejemplo de ViewModel para crear o editar una reserva
     public class ReservaViewModel
     {
+        [Display(Name = "Método de Pago")]
+        [Required(ErrorMessage = "El método de pago es obligatorio.")]
+        public string MetodoPago { get; set; }
 
         [Required(ErrorMessage = "El cliente es obligatorio.")]
         [Range(1, int.MaxValue, ErrorMessage = "Seleccione un cliente válido.")]
@@ -39,5 +42,6 @@ namespace hotelv1.ViewModels
         // Para mostrar listas en el formulario
         public IEnumerable<hotelv1.Models.Entities.Cliente>? Clientes { get; set; }
         public IEnumerable<hotelv1.Models.Entities.Habitacion>? Habitaciones { get; set; }
+        public IEnumerable<string> MetodosPago { get; set; } = new List<string> { "Efectivo", "Tarjeta", "Transferencia" };
     }
 }

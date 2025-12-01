@@ -6,11 +6,13 @@ namespace hotelv1.ViewModels
     {
         public int ClienteId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$", ErrorMessage = "El nombre solo puede contener letras y espacios.")]
         [Display(Name = "Nombre")]
         public string Nombre { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "El apellido es obligatorio.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$", ErrorMessage = "El apellido solo puede contener letras y espacios.")]
         [Display(Name = "Apellido")]
         public string Apellido { get; set; } = string.Empty;
 
@@ -24,6 +26,7 @@ namespace hotelv1.ViewModels
         public string? Email { get; set; }
 
         [Display(Name = "Dirección")]
+        [RegularExpression(@"^(?!\d+$).{5,80}$", ErrorMessage = "La dirección no puede ser solo números y debe tener entre 5 y 80 caracteres.")]
         public string? Direccion { get; set; }
 
         [Display(Name = "Fecha de registro")]

@@ -17,5 +17,7 @@ namespace hotelv1.Models.Entities
         public DateTime FechaSalida { get; set; }
         public decimal Total { get; set; }
         public string? Estado { get; set; } = "Pendiente";
+        [Required]
+        public string MetodoPago { get; set; } = "Efectivo";
     }
 }

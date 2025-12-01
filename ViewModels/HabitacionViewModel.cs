@@ -13,6 +13,7 @@ namespace hotelv1.ViewModels
         public string Numero { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El tipo es obligatorio.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{3,30}$", ErrorMessage = "El tipo solo puede contener letras y espacios.")]
         [StringLength(30, ErrorMessage = "El tipo no puede superar los 30 caracteres.")]
         [Display(Name = "Tipo")]
         public string Tipo { get; set; } = string.Empty;

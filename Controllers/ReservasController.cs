@@ -35,7 +35,7 @@ namespace hotelv1.Controllers
             var model = new ReservaViewModel
             {
                 Clientes = _context.Clientes.ToList(),
-                Habitaciones = _context.Habitaciones.ToList(),
+                Habitaciones = _context.Habitaciones.Where(h => h.Disponible).ToList(),
                 FechaEntrada = DateTime.Today,
                 FechaSalida = DateTime.Today.AddDays(1),
                 Estado = "Pendiente"
@@ -50,20 +50,26 @@ namespace hotelv1.Controllers
         {
             if (ModelState.IsValid)
             {
+                var habitacion = _context.Habitaciones.FirstOrDefault(h => h.HabitacionId == model.HabitacionId);
+                var dias = (model.FechaSalida - model.FechaEntrada).Days;
+                if (dias < 1) dias = 1;
+                var total = habitacion != null ? habitacion.PrecioPorNoche * dias : 0;
                 var reserva = new hotelv1.Models.Entities.Reserva
                 {
                     ClienteId = model.ClienteId,
                     HabitacionId = model.HabitacionId,
                     FechaEntrada = model.FechaEntrada,
                     FechaSalida = model.FechaSalida,
-                    Estado = model.Estado
+                    Estado = model.Estado,
+                    Total = total,
+                    MetodoPago = model.MetodoPago
                 };
                 _context.Reservas.Add(reserva);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             model.Clientes = _context.Clientes.ToList();
-            model.Habitaciones = _context.Habitaciones.ToList();
+            model.Habitaciones = _context.Habitaciones.Where(h => h.Disponible).ToList();
             return View(model);
         }
 
@@ -81,8 +87,10 @@ namespace hotelv1.Controllers
                 FechaEntrada = reserva.FechaEntrada,
                 FechaSalida = reserva.FechaSalida,
                 Estado = reserva.Estado,
+                Total = reserva.Total,
+                MetodoPago = reserva.MetodoPago,
                 Clientes = _context.Clientes.ToList(),
-                Habitaciones = _context.Habitaciones.ToList()
+                Habitaciones = _context.Habitaciones.Where(h => h.Disponible || h.HabitacionId == reserva.HabitacionId).ToList()
             };
             return View(model);
         }
@@ -97,16 +105,22 @@ namespace hotelv1.Controllers
                 return NotFound();
             if (ModelState.IsValid)
             {
+                var habitacion = _context.Habitaciones.FirstOrDefault(h => h.HabitacionId == model.HabitacionId);
+                var dias = (model.FechaSalida - model.FechaEntrada).Days;
+                if (dias < 1) dias = 1;
+                var total = habitacion != null ? habitacion.PrecioPorNoche * dias : 0;
                 reserva.ClienteId = model.ClienteId;
                 reserva.HabitacionId = model.HabitacionId;
                 reserva.FechaEntrada = model.FechaEntrada;
                 reserva.FechaSalida = model.FechaSalida;
                 reserva.Estado = model.Estado;
+                reserva.Total = total;
+                reserva.MetodoPago = model.MetodoPago;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             model.Clientes = _context.Clientes.ToList();
-            model.Habitaciones = _context.Habitaciones.ToList();
+            model.Habitaciones = _context.Habitaciones.Where(h => h.Disponible || h.HabitacionId == reserva.HabitacionId).ToList();
             return View(model);
         }
 

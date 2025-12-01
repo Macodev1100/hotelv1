@@ -25,7 +25,8 @@ namespace hotelv1.Controllers
         [Authorize(Roles = "Administrador,Recepcionista")]
         public IActionResult Create()
         {
-            return View(new FacturaViewModel { FechaEmision = DateTime.Today });
+            var reservas = _context.Reservas.ToList();
+            return View(new FacturaViewModel { FechaEmision = DateTime.Today, Reservas = reservas });
         }
 
         [HttpPost]
@@ -34,17 +35,27 @@ namespace hotelv1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var factura = new hotelv1.Models.Entities.Factura
+                // Validar que la reserva existe
+                var reserva = _context.Reservas.FirstOrDefault(r => r.ReservaId == model.ReservaId);
+                if (reserva == null)
                 {
-                    ReservaId = model.ReservaId,
-                    FechaEmision = model.FechaEmision,
-                    MontoTotal = model.MontoTotal,
-                    Detalle = model.Detalle
-                };
-                _context.Facturas.Add(factura);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+                    ModelState.AddModelError("ReservaId", "La reserva seleccionada no existe.");
+                }
+                else
+                {
+                    var factura = new hotelv1.Models.Entities.Factura
+                    {
+                        ReservaId = model.ReservaId,
+                        FechaEmision = model.FechaEmision,
+                        MontoTotal = model.MontoTotal,
+                        Detalle = model.Detalle
+                    };
+                    _context.Facturas.Add(factura);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            model.Reservas = _context.Reservas.ToList();
             return View(model);
         }
 
@@ -60,7 +71,8 @@ namespace hotelv1.Controllers
                 ReservaId = factura.ReservaId,
                 FechaEmision = factura.FechaEmision,
                 MontoTotal = factura.MontoTotal,
-                Detalle = factura.Detalle
+                Detalle = factura.Detalle,
+                Reservas = _context.Reservas.ToList()
             };
             return View(model);
         }
@@ -74,13 +86,22 @@ namespace hotelv1.Controllers
                 return NotFound();
             if (ModelState.IsValid)
             {
-                factura.ReservaId = model.ReservaId;
-                factura.FechaEmision = model.FechaEmision;
-                factura.MontoTotal = model.MontoTotal;
-                factura.Detalle = model.Detalle;
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+                var reserva = _context.Reservas.FirstOrDefault(r => r.ReservaId == model.ReservaId);
+                if (reserva == null)
+                {
+                    ModelState.AddModelError("ReservaId", "La reserva seleccionada no existe.");
+                }
+                else
+                {
+                    factura.ReservaId = model.ReservaId;
+                    factura.FechaEmision = model.FechaEmision;
+                    factura.MontoTotal = model.MontoTotal;
+                    factura.Detalle = model.Detalle;
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            model.Reservas = _context.Reservas.ToList();
             return View(model);
         }
 

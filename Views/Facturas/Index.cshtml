@@ -29,7 +29,16 @@
                     foreach (var factura in Model)
                     {
                         <tr>
-                            <td>@factura.ReservaId</td>
+                            <td>
+                                @if (factura.Reserva != null)
+                                {
+                                    @factura.Reserva.Habitacion?.Numero
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Reserva no encontrada</span>
+                                }
+                            </td>
                             <td>@factura.FechaEmision.ToShortDateString()</td>
                             <td><span class="badge bg-success">@factura.MontoTotal.ToString("C")</span></td>
                             <td>@factura.Detalle</td>

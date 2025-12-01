@@ -108,5 +108,17 @@ namespace hotelv1.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Limpieza,Mantenimiento")]
+        public IActionResult ToggleEstado(int id)
+        {
+            var habitacion = _context.Habitaciones.Find(id);
+            if (habitacion == null)
+                return NotFound();
+            habitacion.Disponible = !habitacion.Disponible;
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
