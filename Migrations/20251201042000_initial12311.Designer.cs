@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hotelv1.Data;
 
@@ -11,9 +12,11 @@ using hotelv1.Data;
 namespace hotelv1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251201042000_initial12311")]
+    partial class initial12311
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,29 +355,18 @@ namespace hotelv1.Migrations
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FotoUrl")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<string>("Numero")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("ObservacionEstado")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("Ocupada")
-                        .HasColumnType("bit");
 
                     b.Property<decimal>("PrecioPorNoche")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("HabitacionId");
 
@@ -418,29 +410,6 @@ namespace hotelv1.Migrations
                     b.HasIndex("HabitacionId");
 
                     b.ToTable("Reservas");
-                });
-
-            modelBuilder.Entity("hotelv1.Models.Entities.ReservaServicio", b =>
-                {
-                    b.Property<int>("ReservaServicioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservaServicioId"));
-
-                    b.Property<int>("ReservaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ReservaServicioId");
-
-                    b.HasIndex("ReservaId");
-
-                    b.HasIndex("ServicioId");
-
-                    b.ToTable("ReservaServicios");
                 });
 
             modelBuilder.Entity("hotelv1.Models.Entities.Servicio", b =>
@@ -547,25 +516,6 @@ namespace hotelv1.Migrations
                     b.Navigation("Cliente");
 
                     b.Navigation("Habitacion");
-                });
-
-            modelBuilder.Entity("hotelv1.Models.Entities.ReservaServicio", b =>
-                {
-                    b.HasOne("hotelv1.Models.Entities.Reserva", "Reserva")
-                        .WithMany()
-                        .HasForeignKey("ReservaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("hotelv1.Models.Entities.Servicio", "Servicio")
-                        .WithMany()
-                        .HasForeignKey("ServicioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reserva");
-
-                    b.Navigation("Servicio");
                 });
 #pragma warning restore 612, 618
         }

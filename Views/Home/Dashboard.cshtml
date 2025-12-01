@@ -181,12 +181,24 @@
             </div>
         </div>
         <div class="col-md-6">
+            @{
+                string? chartUrl = null;
+                if (ViewBag.HabitacionesDistribucionTipos != null && ((IEnumerable<dynamic>)ViewBag.HabitacionesDistribucionTipos).Any())
+                {
+                    var dist = (IEnumerable<dynamic>)ViewBag.HabitacionesDistribucionTipos;
+                    var colors = new[] { "#005fa3", "#ffd700", "#003366", "#4caf50", "#e57373", "#ff9800", "#9c27b0" };
+                    var labels = string.Join(",", dist.Select(d => $"\"{d.Tipo}\""));
+                    var data = string.Join(",", dist.Select(d => d.Cantidad));
+                    var bgColors = string.Join(",", dist.Select((d, i) => $"\"{colors[i % colors.Length]}\""));
+                    chartUrl = $"https://quickchart.io/chart?c={{\"type\":\"pie\",\"data\":{{\"labels\":[{labels}],\"datasets\":[{{\"data\":[{data}],\"backgroundColor\":[{bgColors}]}}]}}}}";
+                }
+            }
             <div class="dashboard-card dashboard-graph border-0 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title dashboard-section-title"><i class="fas fa-pie-chart me-2 text-success"></i>Distribución de habitaciones</h5>
-                    @if (ViewBag.Habitaciones > 0)
+                    @if (!string.IsNullOrEmpty(chartUrl))
                     {
-                        <img src="https://quickchart.io/chart?c={type:'pie',data:{labels:['Suite','Doble','Individual'],datasets:[{data:[5,12,7],backgroundColor:['#005fa3','#ffd700','#003366']}]} }" class="img-fluid" alt="Gráfico habitaciones" />
+                        <img src="@chartUrl" class="img-fluid" alt="Gráfico habitaciones" />
                     }
                     else
                     {

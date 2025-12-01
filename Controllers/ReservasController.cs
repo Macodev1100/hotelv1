@@ -36,6 +36,7 @@ namespace hotelv1.Controllers
             {
                 Clientes = _context.Clientes.ToList(),
                 Habitaciones = _context.Habitaciones.Where(h => h.Disponible).ToList(),
+                Servicios = _context.Servicios.ToList(),
                 FechaEntrada = DateTime.Today,
                 FechaSalida = DateTime.Today.AddDays(1),
                 Estado = "Pendiente"
@@ -53,7 +54,10 @@ namespace hotelv1.Controllers
                 var habitacion = _context.Habitaciones.FirstOrDefault(h => h.HabitacionId == model.HabitacionId);
                 var dias = (model.FechaSalida - model.FechaEntrada).Days;
                 if (dias < 1) dias = 1;
-                var total = habitacion != null ? habitacion.PrecioPorNoche * dias : 0;
+                decimal total = habitacion != null ? habitacion.PrecioPorNoche * dias : 0;
+                var serviciosSeleccionados = _context.Servicios.Where(s => model.ServiciosSeleccionados.Contains(s.ServicioId)).ToList();
+                decimal totalServicios = serviciosSeleccionados.Sum(s => s.Precio);
+                total += totalServicios;
                 var reserva = new hotelv1.Models.Entities.Reserva
                 {
                     ClienteId = model.ClienteId,
@@ -66,10 +70,21 @@ namespace hotelv1.Controllers
                 };
                 _context.Reservas.Add(reserva);
                 _context.SaveChanges();
+                // Guardar relación muchos a muchos
+                foreach (var servicio in serviciosSeleccionados)
+                {
+                    _context.ReservaServicios.Add(new hotelv1.Models.Entities.ReservaServicio
+                    {
+                        ReservaId = reserva.ReservaId,
+                        ServicioId = servicio.ServicioId
+                    });
+                }
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             model.Clientes = _context.Clientes.ToList();
             model.Habitaciones = _context.Habitaciones.Where(h => h.Disponible).ToList();
+            model.Servicios = _context.Servicios.ToList();
             return View(model);
         }
 
@@ -80,6 +95,7 @@ namespace hotelv1.Controllers
             var reserva = _context.Reservas.Find(id);
             if (reserva == null)
                 return NotFound();
+            var serviciosReserva = _context.ReservaServicios.Where(rs => rs.ReservaId == id).Select(rs => rs.ServicioId).ToList();
             var model = new ReservaViewModel
             {
                 ClienteId = reserva.ClienteId,
@@ -90,7 +106,9 @@ namespace hotelv1.Controllers
                 Total = reserva.Total,
                 MetodoPago = reserva.MetodoPago,
                 Clientes = _context.Clientes.ToList(),
-                Habitaciones = _context.Habitaciones.Where(h => h.Disponible || h.HabitacionId == reserva.HabitacionId).ToList()
+                Habitaciones = _context.Habitaciones.Where(h => h.Disponible || h.HabitacionId == reserva.HabitacionId).ToList(),
+                Servicios = _context.Servicios.ToList(),
+                ServiciosSeleccionados = serviciosReserva
             };
             return View(model);
         }
@@ -108,7 +126,10 @@ namespace hotelv1.Controllers
                 var habitacion = _context.Habitaciones.FirstOrDefault(h => h.HabitacionId == model.HabitacionId);
                 var dias = (model.FechaSalida - model.FechaEntrada).Days;
                 if (dias < 1) dias = 1;
-                var total = habitacion != null ? habitacion.PrecioPorNoche * dias : 0;
+                decimal total = habitacion != null ? habitacion.PrecioPorNoche * dias : 0;
+                var serviciosSeleccionados = _context.Servicios.Where(s => model.ServiciosSeleccionados.Contains(s.ServicioId)).ToList();
+                decimal totalServicios = serviciosSeleccionados.Sum(s => s.Precio);
+                total += totalServicios;
                 reserva.ClienteId = model.ClienteId;
                 reserva.HabitacionId = model.HabitacionId;
                 reserva.FechaEntrada = model.FechaEntrada;
@@ -116,11 +137,23 @@ namespace hotelv1.Controllers
                 reserva.Estado = model.Estado;
                 reserva.Total = total;
                 reserva.MetodoPago = model.MetodoPago;
+                // Actualizar servicios asociados
+                var serviciosActuales = _context.ReservaServicios.Where(rs => rs.ReservaId == reserva.ReservaId).ToList();
+                _context.ReservaServicios.RemoveRange(serviciosActuales);
+                foreach (var servicio in serviciosSeleccionados)
+                {
+                    _context.ReservaServicios.Add(new hotelv1.Models.Entities.ReservaServicio
+                    {
+                        ReservaId = reserva.ReservaId,
+                        ServicioId = servicio.ServicioId
+                    });
+                }
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             model.Clientes = _context.Clientes.ToList();
             model.Habitaciones = _context.Habitaciones.Where(h => h.Disponible || h.HabitacionId == reserva.HabitacionId).ToList();
+            model.Servicios = _context.Servicios.ToList();
             return View(model);
         }
 

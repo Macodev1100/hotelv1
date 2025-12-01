@@ -16,5 +16,6 @@ namespace hotelv1.Data
         public DbSet<hotelv1.Models.Entities.Reserva> Reservas { get; set; }
         public DbSet<hotelv1.Models.Entities.Servicio> Servicios { get; set; }
         public DbSet<hotelv1.Models.Entities.Factura> Facturas { get; set; }
+        public DbSet<hotelv1.Models.Entities.ReservaServicio> ReservaServicios { get; set; }
     }
 }

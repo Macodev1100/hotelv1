@@ -3,6 +3,7 @@ using hotelv1.ViewModels;
 using hotelv1.Data;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace hotelv1.Controllers
 {
@@ -25,7 +26,7 @@ namespace hotelv1.Controllers
         [Authorize(Roles = "Administrador,Recepcionista")]
         public IActionResult Create()
         {
-            var reservas = _context.Reservas.ToList();
+            var reservas = _context.Reservas.Include(r => r.Habitacion).ToList();
             return View(new FacturaViewModel { FechaEmision = DateTime.Today, Reservas = reservas });
         }
 
@@ -55,7 +56,7 @@ namespace hotelv1.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            model.Reservas = _context.Reservas.ToList();
+            model.Reservas = _context.Reservas.Include(r => r.Habitacion).ToList();
             return View(model);
         }
 
@@ -65,6 +66,7 @@ namespace hotelv1.Controllers
             var factura = _context.Facturas.Find(id);
             if (factura == null)
                 return NotFound();
+            var reservas = _context.Reservas.Include(r => r.Habitacion).ToList();
             var model = new FacturaViewModel
             {
                 FacturaId = factura.FacturaId,
@@ -72,7 +74,7 @@ namespace hotelv1.Controllers
                 FechaEmision = factura.FechaEmision,
                 MontoTotal = factura.MontoTotal,
                 Detalle = factura.Detalle,
-                Reservas = _context.Reservas.ToList()
+                Reservas = reservas ?? new List<hotelv1.Models.Entities.Reserva>()
             };
             return View(model);
         }
@@ -101,7 +103,7 @@ namespace hotelv1.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            model.Reservas = _context.Reservas.ToList();
+            model.Reservas = _context.Reservas.Include(r => r.Habitacion).ToList() ?? new List<hotelv1.Models.Entities.Reserva>();
             return View(model);
         }
 

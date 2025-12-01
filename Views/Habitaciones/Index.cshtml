@@ -17,10 +17,14 @@
                     <tr>
                         <th><i class="fas fa-hashtag"></i> Número</th>
                         <th><i class="fas fa-door-closed"></i> Tipo</th>
-                        <th><i class="fas fa-dollar-sign"></i> Precio/Noche</th>
                         <th><i class="fas fa-check-circle"></i> Disponible</th>
-                        <th><i class="fas fa-align-left"></i> Descripción</th>
-                        <th class="text-end">Acciones</th>
+                        <th><i class="fas fa-align-left"></i> Observación Estado</th>
+                        @if (!(User.IsInRole("Limpieza") || User.IsInRole("Mantenimiento")))
+                        {
+                            <th><i class="fas fa-dollar-sign"></i> Precio/Noche</th>
+                            <th><i class="fas fa-align-left"></i> Descripción</th>
+                            <th class="text-end">Acciones</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +39,6 @@
                         <tr>
                             <td>@habitacion.Numero</td>
                             <td>@habitacion.Tipo</td>
-                            <td>@habitacion.PrecioPorNoche.ToString("C")</td>
                             <td>
                                 @if (habitacion.Disponible)
                                 {
@@ -46,26 +49,33 @@
                                     <span class="badge bg-danger">No</span>
                                 }
                             </td>
-                            <td>@habitacion.Descripcion</td>
-                            <td class="text-end">
-                                @* Solo mostrar acciones según el rol *@
-                                @if (User.IsInRole("Administrador"))
-                                {
-                                    <a href="/Habitaciones/Edit/@habitacion.HabitacionId" class="btn btn-sm btn-outline-warning me-1"><i class="fas fa-edit"></i></a>
-                                    <a href="/Habitaciones/Delete/@habitacion.HabitacionId" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></a>
-                                }
-                                else if (User.IsInRole("Recepcionista"))
-                                {
-                                    <a href="/Reservas/Create?habitacionId=@habitacion.HabitacionId" class="btn btn-sm btn-success"><i class="fas fa-calendar-plus"></i> Reservar</a>
-                                }
-                                else if (User.IsInRole("Limpieza") || User.IsInRole("Mantenimiento"))
-                                {
+                            <td>@habitacion.ObservacionEstado</td>
+                            @if (!(User.IsInRole("Limpieza") || User.IsInRole("Mantenimiento")))
+                            {
+                                <td>@habitacion.PrecioPorNoche.ToString("C")</td>
+                                <td>@habitacion.Descripcion</td>
+                                <td class="text-end">
+                                    @* Solo mostrar acciones según el rol *@
+                                    @if (User.IsInRole("Administrador"))
+                                    {
+                                        <a href="/Habitaciones/Edit/@habitacion.HabitacionId" class="btn btn-sm btn-outline-warning me-1"><i class="fas fa-edit"></i></a>
+                                        <a href="/Habitaciones/Delete/@habitacion.HabitacionId" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></a>
+                                    }
+                                    else if (User.IsInRole("Recepcionista"))
+                                    {
+                                        <a href="/Reservas/Create?habitacionId=@habitacion.HabitacionId" class="btn btn-sm btn-success"><i class="fas fa-calendar-plus"></i> Reservar</a>
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="text-end">
                                     <form asp-action="ToggleEstado" asp-controller="Habitaciones" method="post" style="display:inline">
                                         <input type="hidden" name="id" value="@habitacion.HabitacionId" />
                                         <button type="submit" class="btn btn-sm btn-info">@((habitacion.Disponible ? "Marcar No Disponible" : "Marcar Disponible"))</button>
                                     </form>
-                                }
-                            </td>
+                                </td>
+                            }
                         </tr>
                     }
                 }

@@ -23,7 +23,14 @@
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="Puesto" class="form-label fw-semibold"></label>
-                                <input asp-for="Puesto" class="form-control form-control-lg" placeholder="Puesto" />
+                                <select asp-for="Puesto" class="form-select form-select-lg">
+                                    <option value="">Seleccione un puesto</option>
+                                    <option value="Recepcionista">Recepcionista</option>
+                                    <option value="Limpieza">Limpieza</option>
+                                    <option value="Mantenimiento">Mantenimiento</option>
+                                    <option value="Gerente">Gerente</option>
+                                    <option value="Administrador">Administrador</option>
+                                </select>
                                 <span asp-validation-for="Puesto" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">

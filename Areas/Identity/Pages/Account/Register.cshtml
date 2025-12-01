@@ -109,6 +109,13 @@
                 <label asp-for="Input.ConfirmPassword">Confirmar contraseña</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Input.Rol" class="form-control" asp-items="@(new SelectList(Model.RolesDisponibles))">
+                    <option value="">Seleccione un rol</option>
+                </select>
+                <label asp-for="Input.Rol">Rol</label>
+                <span asp-validation-for="Input.Rol" class="text-danger"></span>
+            </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mb-2">Registrarse</button>
             <div class="d-flex justify-content-between links">
                 <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">¿Ya tienes cuenta? Inicia sesión</a>

@@ -41,6 +41,14 @@ namespace hotelv1.Controllers
             ViewBag.Reservas = _context.Reservas.Count();
             ViewBag.Facturacion = _context.Facturas.Sum(f => (decimal?)f.MontoTotal) ?? 0;
 
+            // Distribución de habitaciones por tipo
+            var distribucion = _context.Habitaciones
+                .GroupBy(h => h.Tipo)
+                .Select(g => new { Tipo = g.Key, Cantidad = g.Count() })
+                .OrderByDescending(x => x.Cantidad)
+                .ToList();
+            ViewBag.HabitacionesDistribucionTipos = distribucion;
+
             // Check-ins de hoy
             var checkinsHoy = _context.Reservas
                 .Include(r => r.Cliente)

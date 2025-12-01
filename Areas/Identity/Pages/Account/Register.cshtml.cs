@@ -70,46 +70,52 @@ namespace hotelv1.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
             [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido.")]
             [Display(Name = "Correo electrónico")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required(ErrorMessage = "La contraseña es obligatoria.")]
             [StringLength(100, ErrorMessage = "La contraseña debe tener entre {2} y {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Contraseña")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirmar contraseña")]
             [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "El rol es obligatorio.")]
+            [Display(Name = "Rol")]
+            public string Rol { get; set; }
         }
+
+        public List<string> RolesDisponibles { get; set; } = new List<string>();
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            // Cargar roles disponibles
+            var roleManager = HttpContext.RequestServices.GetService(typeof(RoleManager<IdentityRole>)) as RoleManager<IdentityRole>;
+            if (roleManager != null)
+            {
+                RolesDisponibles = roleManager.Roles.Select(r => r.Name).ToList();
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            // Cargar roles disponibles para el caso de error
+            var roleManager = HttpContext.RequestServices.GetService(typeof(RoleManager<IdentityRole>)) as RoleManager<IdentityRole>;
+            if (roleManager != null)
+            {
+                RolesDisponibles = roleManager.Roles.Select(r => r.Name).ToList();
+            }
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -120,7 +126,13 @@ namespace hotelv1.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    // Asignar el rol seleccionado
+                    if (!string.IsNullOrEmpty(Input.Rol) && await roleManager.RoleExistsAsync(Input.Rol))
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Rol);
+                    }
+
+                    _logger.LogInformation("Usuario creó una nueva cuenta con contraseña.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -131,8 +143,8 @@ namespace hotelv1.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirma tu correo electrónico",
+                        $"Por favor confirma tu cuenta haciendo <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clic aquí</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -146,7 +158,17 @@ namespace hotelv1.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    // Traducción básica de errores comunes de Identity
+                    var desc = error.Description
+                        .Replace("Passwords must have at least one non alphanumeric character.", "La contraseña debe tener al menos un carácter especial.")
+                        .Replace("Passwords must have at least one digit ('0'-'9').", "La contraseña debe tener al menos un número (0-9).")
+                        .Replace("Passwords must have at least one uppercase ('A'-'Z').", "La contraseña debe tener al menos una letra mayúscula (A-Z).")
+                        .Replace("Passwords must have at least one lowercase ('a'-'z').", "La contraseña debe tener al menos una letra minúscula (a-z).")
+                        .Replace("Email '" + Input.Email + "' is already taken.", "El correo electrónico ya está registrado.")
+                        .Replace("User name '" + Input.Email + "' is already taken.", "El correo electrónico ya está registrado.")
+                        .Replace("Invalid token.", "Token inválido.")
+                        .Replace("Invalid email.", "Correo electrónico inválido.");
+                    ModelState.AddModelError(string.Empty, desc);
                 }
             }
 

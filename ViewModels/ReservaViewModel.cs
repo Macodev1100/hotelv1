@@ -42,6 +42,9 @@ namespace hotelv1.ViewModels
         // Para mostrar listas en el formulario
         public IEnumerable<hotelv1.Models.Entities.Cliente>? Clientes { get; set; }
         public IEnumerable<hotelv1.Models.Entities.Habitacion>? Habitaciones { get; set; }
+        public IEnumerable<hotelv1.Models.Entities.Servicio>? Servicios { get; set; }
+        [Display(Name = "Servicios seleccionados")]
+        public List<int> ServiciosSeleccionados { get; set; } = new List<int>();
         public IEnumerable<string> MetodosPago { get; set; } = new List<string> { "Efectivo", "Tarjeta", "Transferencia" };
     }
 }

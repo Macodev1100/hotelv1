@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hotelv1.Data;
 
@@ -11,9 +12,11 @@ using hotelv1.Data;
 namespace hotelv1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251201042625_initial123111")]
+    partial class initial123111
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -420,29 +423,6 @@ namespace hotelv1.Migrations
                     b.ToTable("Reservas");
                 });
 
-            modelBuilder.Entity("hotelv1.Models.Entities.ReservaServicio", b =>
-                {
-                    b.Property<int>("ReservaServicioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservaServicioId"));
-
-                    b.Property<int>("ReservaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServicioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ReservaServicioId");
-
-                    b.HasIndex("ReservaId");
-
-                    b.HasIndex("ServicioId");
-
-                    b.ToTable("ReservaServicios");
-                });
-
             modelBuilder.Entity("hotelv1.Models.Entities.Servicio", b =>
                 {
                     b.Property<int>("ServicioId")
@@ -547,25 +527,6 @@ namespace hotelv1.Migrations
                     b.Navigation("Cliente");
 
                     b.Navigation("Habitacion");
-                });
-
-            modelBuilder.Entity("hotelv1.Models.Entities.ReservaServicio", b =>
-                {
-                    b.HasOne("hotelv1.Models.Entities.Reserva", "Reserva")
-                        .WithMany()
-                        .HasForeignKey("ReservaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("hotelv1.Models.Entities.Servicio", "Servicio")
-                        .WithMany()
-                        .HasForeignKey("ServicioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reserva");
-
-                    b.Navigation("Servicio");
                 });
 #pragma warning restore 612, 618
         }

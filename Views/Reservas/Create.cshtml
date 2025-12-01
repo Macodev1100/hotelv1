@@ -12,6 +12,26 @@
                 <form asp-action="Create" method="post" autocomplete="off">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                     <div class="mb-3">
+                        <label asp-for="ServiciosSeleccionados" class="form-label fw-semibold"><i class="fas fa-concierge-bell me-1"></i>Servicios</label>
+                        <select asp-for="ServiciosSeleccionados" class="form-select form-select-lg" multiple size="4">
+                            @if (Model.Servicios != null)
+                            {
+                                    foreach (var s in Model.Servicios)
+                                    {
+                                        @if (Model.ServiciosSeleccionados != null && Model.ServiciosSeleccionados.Contains(s.ServicioId))
+                                        {
+                                            <option value="@s.ServicioId" selected>@s.Nombre (@s.Precio.ToString("C"))</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@s.ServicioId">@s.Nombre (@s.Precio.ToString("C"))</option>
+                                        }
+                                    }
+                            }
+                        </select>
+                        <span asp-validation-for="ServiciosSeleccionados" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
                         <label asp-for="ClienteId" class="form-label fw-semibold"><i class="fas fa-user me-1"></i>Cliente</label>
                         <select asp-for="ClienteId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Clientes, "ClienteId", "Nombre"))">
                             <option value="">Seleccione un cliente</option>
@@ -62,6 +82,7 @@
                             <script>
                             function calcularTotal() {
                                 var habitaciones = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Habitaciones.Select(h => new { h.HabitacionId, h.PrecioPorNoche })));
+                                var servicios = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Servicios.Select(s => new { s.ServicioId, s.Precio })));
                                 var habitacionId = parseInt(document.getElementById('HabitacionId').value);
                                 var precio = habitaciones.find(h => h.HabitacionId === habitacionId)?.PrecioPorNoche || 0;
                                 var fechaEntrada = new Date(document.getElementById('FechaEntrada').value);
@@ -69,11 +90,20 @@
                                 var dias = (fechaSalida - fechaEntrada) / (1000 * 60 * 60 * 24);
                                 dias = isNaN(dias) || dias < 1 ? 1 : dias;
                                 var total = precio * dias;
+                                // Sumar servicios seleccionados
+                                var serviciosSelect = document.getElementById('ServiciosSeleccionados');
+                                if (serviciosSelect) {
+                                    var selected = Array.from(serviciosSelect.selectedOptions).map(opt => parseInt(opt.value));
+                                    var totalServicios = servicios.filter(s => selected.includes(s.ServicioId)).reduce((acc, s) => acc + s.Precio, 0);
+                                    total += totalServicios;
+                                }
                                 document.getElementById('Total').value = total.toFixed(2);
                             }
                             document.getElementById('HabitacionId').addEventListener('change', calcularTotal);
                             document.getElementById('FechaEntrada').addEventListener('change', calcularTotal);
                             document.getElementById('FechaSalida').addEventListener('change', calcularTotal);
+                            var serviciosSelect = document.getElementById('ServiciosSeleccionados');
+                            if (serviciosSelect) serviciosSelect.addEventListener('change', calcularTotal);
                             window.addEventListener('DOMContentLoaded', calcularTotal);
                             </script>
             </div>
