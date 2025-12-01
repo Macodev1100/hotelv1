@@ -164,8 +164,9 @@ namespace hotelv1.Areas.Identity.Pages.Account
                         .Replace("Passwords must have at least one digit ('0'-'9').", "La contraseña debe tener al menos un número (0-9).")
                         .Replace("Passwords must have at least one uppercase ('A'-'Z').", "La contraseña debe tener al menos una letra mayúscula (A-Z).")
                         .Replace("Passwords must have at least one lowercase ('a'-'z').", "La contraseña debe tener al menos una letra minúscula (a-z).")
-                        .Replace("Email '" + Input.Email + "' is already taken.", "El correo electrónico ya está registrado.")
-                        .Replace("User name '" + Input.Email + "' is already taken.", "El correo electrónico ya está registrado.")
+                        .Replace($"Email '{Input.Email}' is already taken.", "El correo electrónico ya está registrado.")
+                        .Replace($"User name '{Input.Email}' is already taken.", "El correo electrónico ya está registrado.")
+                        .Replace($"Username '{Input.Email}' is already taken.", "El correo electrónico ya está registrado.")
                         .Replace("Invalid token.", "Token inválido.")
                         .Replace("Invalid email.", "Correo electrónico inválido.");
                     ModelState.AddModelError(string.Empty, desc);

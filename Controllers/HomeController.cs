@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hotelv1.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -22,7 +21,11 @@ namespace hotelv1.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+            return RedirectToAction("Dashboard");
         }
 
         public IActionResult Privacy()
@@ -109,6 +112,31 @@ namespace hotelv1.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [Authorize(Roles = "Administrador")]
+        public IActionResult Configuracion()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CargarDemo()
+        {
+            await hotelv1.Data.SeedDemoData.SeedAsync(_context);
+            TempData["DemoMsg"] = "Datos demo cargados correctamente.";
+            return RedirectToAction("Configuracion");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EliminarDemo()
+        {
+            await hotelv1.Data.SeedDemoData.DeleteAllAsync(_context);
+            TempData["DemoMsg"] = "Datos demo eliminados correctamente.";
+            return RedirectToAction("Configuracion");
         }
     }
 }

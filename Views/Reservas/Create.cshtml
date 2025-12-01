@@ -12,23 +12,26 @@
                 <form asp-action="Create" method="post" autocomplete="off">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                     <div class="mb-3">
-                        <label asp-for="ServiciosSeleccionados" class="form-label fw-semibold"><i class="fas fa-concierge-bell me-1"></i>Servicios</label>
-                        <select asp-for="ServiciosSeleccionados" class="form-select form-select-lg" multiple size="4">
-                            @if (Model.Servicios != null)
+                        <label class="form-label fw-semibold"><i class="fas fa-concierge-bell me-1"></i>Servicios</label>
+                        <div>
+                            @if (Model.Servicios != null && Model.Servicios.Any())
                             {
-                                    foreach (var s in Model.Servicios)
-                                    {
-                                        @if (Model.ServiciosSeleccionados != null && Model.ServiciosSeleccionados.Contains(s.ServicioId))
-                                        {
-                                            <option value="@s.ServicioId" selected>@s.Nombre (@s.Precio.ToString("C"))</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@s.ServicioId">@s.Nombre (@s.Precio.ToString("C"))</option>
-                                        }
-                                    }
+                                foreach (var s in Model.Servicios)
+                                {
+                                    var isChecked = Model.ServiciosSeleccionados != null && Model.ServiciosSeleccionados.Contains(s.ServicioId);
+                                    <div class="form-check form-check-inline mb-2">
+                                        <input class="form-check-input" type="checkbox" name="ServiciosSeleccionados" id="servicio_@s.ServicioId" value="@s.ServicioId" @(isChecked ? "checked" : "") />
+                                        <label class="form-check-label" for="servicio_@s.ServicioId">
+                                            @s.Nombre (@s.Precio.ToString("C"))
+                                        </label>
+                                    </div>
+                                }
                             }
-                        </select>
+                            else
+                            {
+                                <span class="text-muted">No hay servicios disponibles.</span>
+                            }
+                        </div>
                         <span asp-validation-for="ServiciosSeleccionados" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -40,9 +43,30 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="HabitacionId" class="form-label fw-semibold"><i class="fas fa-bed me-1"></i>Habitación</label>
-                        <select asp-for="HabitacionId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Habitaciones, "HabitacionId", "Numero"))">
-                            <option value="">Seleccione una habitación</option>
-                        </select>
+                        @if (ViewBag.HabitacionBloqueada == true)
+                        {
+                            <select asp-for="HabitacionId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Habitaciones, "HabitacionId", "Numero"))" disabled>
+                                <option value="">Seleccione una habitación</option>
+                                @foreach (var h in Model.Habitaciones)
+                                {
+                                    @if (Model.HabitacionId == h.HabitacionId)
+                                    {
+                                        <option value="@h.HabitacionId" selected>@h.Numero</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@h.HabitacionId">@h.Numero</option>
+                                    }
+                                }
+                            </select>
+                            <input type="hidden" asp-for="HabitacionId" />
+                        }
+                        else
+                        {
+                            <select asp-for="HabitacionId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Habitaciones, "HabitacionId", "Numero"))">
+                                <option value="">Seleccione una habitación</option>
+                            </select>
+                        }
                         <span asp-validation-for="HabitacionId" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -90,20 +114,16 @@
                                 var dias = (fechaSalida - fechaEntrada) / (1000 * 60 * 60 * 24);
                                 dias = isNaN(dias) || dias < 1 ? 1 : dias;
                                 var total = precio * dias;
-                                // Sumar servicios seleccionados
-                                var serviciosSelect = document.getElementById('ServiciosSeleccionados');
-                                if (serviciosSelect) {
-                                    var selected = Array.from(serviciosSelect.selectedOptions).map(opt => parseInt(opt.value));
-                                    var totalServicios = servicios.filter(s => selected.includes(s.ServicioId)).reduce((acc, s) => acc + s.Precio, 0);
-                                    total += totalServicios;
-                                }
+                                // Sumar servicios seleccionados (checkboxes)
+                                var selected = Array.from(document.querySelectorAll('input[name="ServiciosSeleccionados"]:checked')).map(cb => parseInt(cb.value));
+                                var totalServicios = servicios.filter(s => selected.includes(s.ServicioId)).reduce((acc, s) => acc + s.Precio, 0);
+                                total += totalServicios;
                                 document.getElementById('Total').value = total.toFixed(2);
                             }
                             document.getElementById('HabitacionId').addEventListener('change', calcularTotal);
                             document.getElementById('FechaEntrada').addEventListener('change', calcularTotal);
                             document.getElementById('FechaSalida').addEventListener('change', calcularTotal);
-                            var serviciosSelect = document.getElementById('ServiciosSeleccionados');
-                            if (serviciosSelect) serviciosSelect.addEventListener('change', calcularTotal);
+                            document.querySelectorAll('input[name="ServiciosSeleccionados"]').forEach(cb => cb.addEventListener('change', calcularTotal));
                             window.addEventListener('DOMContentLoaded', calcularTotal);
                             </script>
             </div>

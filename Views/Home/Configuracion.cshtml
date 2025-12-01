@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Configuración";
+}
+<div class="container py-4">
+    <h2 class="mb-4">Configuración de Datos de Prueba</h2>
+    <div class="alert alert-info mb-4">
+        Puedes cargar una gran cantidad de datos de prueba o eliminarlos completamente de la base de datos.
+    </div>
+    @if (TempData["DemoMsg"] != null)
+    {
+        <div class="alert alert-success">@TempData["DemoMsg"]</div>
+    }
+    <form asp-action="CargarDemo" method="post" class="d-inline">
+        <button type="submit" class="btn btn-success me-2"><i class="fas fa-database me-1"></i> Cargar datos demo</button>
+    </form>
+    <form asp-action="EliminarDemo" method="post" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar todos los datos demo?');">
+        <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-1"></i> Eliminar datos demo</button>
+    </form>
+</div>

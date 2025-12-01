@@ -26,7 +26,6 @@
                                 <select asp-for="Puesto" class="form-select form-select-lg">
                                     <option value="">Seleccione un puesto</option>
                                     <option value="Recepcionista">Recepcionista</option>
-                                    <option value="Limpieza">Limpieza</option>
                                     <option value="Mantenimiento">Mantenimiento</option>
                                     <option value="Gerente">Gerente</option>
                                     <option value="Administrador">Administrador</option>
@@ -53,6 +52,16 @@
                                     <input asp-for="Activo" class="form-check-input" type="checkbox" role="switch" id="activoSwitch" />
                                     <label asp-for="Activo" class="form-check-label" for="activoSwitch">Activo</label>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Password" class="form-label fw-semibold"></label>
+                                <input asp-for="Password" class="form-control form-control-lg" type="password" placeholder="Contraseña" autocomplete="new-password" />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ConfirmPassword" class="form-label fw-semibold"></label>
+                                <input asp-for="ConfirmPassword" class="form-control form-control-lg" type="password" placeholder="Confirmar contraseña" autocomplete="new-password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                             </div>
                         </div>
                         <div class="mt-4 d-flex justify-content-end gap-2">

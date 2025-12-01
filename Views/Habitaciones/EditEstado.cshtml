@@ -1,0 +1,47 @@
+@model hotelv1.ViewModels.HabitacionViewModel
+@{
+    ViewData["Title"] = "Editar Estado de Habitación";
+}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0"><i class="fas fa-edit me-2"></i>Editar Estado de Habitación</h3>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditEstado" method="post">
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+                    <input type="hidden" asp-for="HabitacionId" />
+                    <input type="hidden" asp-for="Numero" />
+                    <input type="hidden" asp-for="Tipo" />
+                    <input type="hidden" asp-for="PrecioPorNoche" />
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Número</label>
+                        <div class="form-control-plaintext">@Model.Numero</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tipo</label>
+                        <div class="form-control-plaintext">@Model.Tipo</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Precio por Noche</label>
+                        <div class="form-control-plaintext">@Model.PrecioPorNoche.ToString("C")</div>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input asp-for="Disponible" class="form-check-input" id="Disponible" />
+                        <label asp-for="Disponible" class="form-check-label fw-semibold" for="Disponible"><i class="fas fa-check-circle me-1"></i>Disponible</label>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ObservacionEstado" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Observación de Estado</label>
+                        <input asp-for="ObservacionEstado" class="form-control form-control-lg" placeholder="Ej: En mantenimiento, falta limpieza, etc." />
+                        <span asp-validation-for="ObservacionEstado" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
+                        <a href="/Habitaciones" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

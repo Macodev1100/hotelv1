@@ -17,5 +17,31 @@ namespace hotelv1.Data
         public DbSet<hotelv1.Models.Entities.Servicio> Servicios { get; set; }
         public DbSet<hotelv1.Models.Entities.Factura> Facturas { get; set; }
         public DbSet<hotelv1.Models.Entities.ReservaServicio> ReservaServicios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Factura -> Reserva (FK)
+            modelBuilder.Entity<hotelv1.Models.Entities.Factura>()
+                .HasOne(f => f.Reserva)
+                .WithMany()
+                .HasForeignKey(f => f.ReservaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Reserva -> Habitacion (FK)
+            modelBuilder.Entity<hotelv1.Models.Entities.Reserva>()
+                .HasOne(r => r.Habitacion)
+                .WithMany()
+                .HasForeignKey(r => r.HabitacionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Reserva -> Cliente (FK)
+            modelBuilder.Entity<hotelv1.Models.Entities.Reserva>()
+                .HasOne(r => r.Cliente)
+                .WithMany()
+                .HasForeignKey(r => r.ClienteId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

@@ -166,8 +166,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaXRhY2lvbmVzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[X:/Project Folder/New folder/hotelv1/hotelv1/Views/Habitaciones/EditEstado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaXRhY2lvbmVzXEVkaXRFc3RhZG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [X:/Project Folder/New folder/hotelv1/hotelv1/Views/Habitaciones/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaXRhY2lvbmVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[X:/Project Folder/New folder/hotelv1/hotelv1/Views/Home/Configuracion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb25maWd1cmFjaW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [X:/Project Folder/New folder/hotelv1/hotelv1/Views/Home/Dashboard.cshtml]

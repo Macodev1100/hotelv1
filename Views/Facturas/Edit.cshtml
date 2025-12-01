@@ -16,9 +16,20 @@
                         <label asp-for="ReservaId" class="form-label fw-semibold"><i class="fas fa-calendar-check me-1"></i>Reserva</label>
                         @if ((Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>()).Any())
                         {
-                            <select asp-for="ReservaId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>(), "ReservaId", "Habitacion.Numero"))" id="reservaSelect">
+                            var reservaEncontrada = Model.Reservas.Any(r => r.ReservaId == Model.ReservaId);
+                            <select asp-for="ReservaId" class="form-select form-select-lg" id="reservaSelect">
                                 <option value="">Seleccione una reserva</option>
+                                @foreach (var r in Model.Reservas)
+                                {
+                                    var habNum = r.Habitacion != null ? r.Habitacion.Numero : "Sin habitación";
+                                    var fechas = r.FechaEntrada.ToString("dd/MM/yyyy") + " - " + r.FechaSalida.ToString("dd/MM/yyyy");
+                                    <option value="@r.ReservaId" selected="@(Model.ReservaId == r.ReservaId ? "selected" : null)">Hab. @habNum | @fechas</option>
+                                }
                             </select>
+                            @if (!reservaEncontrada && Model.ReservaId != 0)
+                            {
+                                <div class="alert alert-danger mt-2">La reserva seleccionada ya no existe o fue eliminada.</div>
+                            }
                         }
                         else
                         {

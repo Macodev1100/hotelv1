@@ -3,6 +3,9 @@ using hotelv1.ViewModels;
 using hotelv1.Data;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using hotelv1.Models.Entities;
 
 namespace hotelv1.Controllers
 {
@@ -10,10 +13,14 @@ namespace hotelv1.Controllers
     public class EmpleadosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public EmpleadosController(ApplicationDbContext context)
+        public EmpleadosController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -30,11 +37,40 @@ namespace hotelv1.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrador")]
-        public IActionResult Create(EmpleadoViewModel model)
+        public async Task<IActionResult> Create(EmpleadoViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var empleado = new hotelv1.Models.Entities.Empleado
+                // Verificar si el usuario ya existe
+                var existingUser = await _userManager.FindByEmailAsync(model.Email ?? string.Empty);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "Ya existe un usuario con ese correo electrónico.");
+                    return View(model);
+                }
+
+                // Crear usuario en Identity
+                var user = new IdentityUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+
+                // Asignar rol
+                var role = model.Puesto;
+                if (!await _roleManager.RoleExistsAsync(role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(role));
+                }
+                await _userManager.AddToRoleAsync(user, role);
+
+                // Guardar empleado en la base de datos
+                var empleado = new Empleado
                 {
                     Nombre = model.Nombre,
                     Apellido = model.Apellido,

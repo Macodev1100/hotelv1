@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-
 namespace hotelv1.ViewModels
 {
     public class EmpleadoViewModel
@@ -34,5 +33,18 @@ namespace hotelv1.ViewModels
         public DateTime FechaContratacion { get; set; } = DateTime.Now;
 
         public bool Activo { get; set; } = true;
+
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [StringLength(100, ErrorMessage = "La contraseña debe tener al menos {2} caracteres.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Debe confirmar la contraseña.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirmar contraseña")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
+        public string ConfirmPassword { get; set; } = string.Empty;
+
     }
 }

@@ -3,6 +3,10 @@
     ViewData["Title"] = "Eliminar Habitación";
 }
 <h2>Eliminar Habitación</h2>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
 <div class="alert alert-danger">¿Estás seguro que deseas eliminar esta habitación?</div>
 <dl class="row">
     <dt class="col-sm-2">Número</dt>

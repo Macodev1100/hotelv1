@@ -41,7 +41,7 @@
                         <input asp-for="Descripcion" class="form-control form-control-lg" placeholder="Descripción breve de la habitación" />
                         <span asp-validation-for="Descripcion" class="text-danger"></span>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" id="observacionEstadoDiv">
                         <label asp-for="ObservacionEstado" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Observación de Estado</label>
                         <input asp-for="ObservacionEstado" class="form-control form-control-lg" placeholder="Ej: En mantenimiento, falta limpieza, etc." />
                         <span asp-validation-for="ObservacionEstado" class="text-danger"></span>
@@ -54,7 +54,8 @@
                         </div>
                         <input type="file" id="fileInput" name="FotoFile" style="display:none" accept="image/*" />
                         <div class="mt-2">
-                            <img id="previewImg" src="#" alt="Vista previa" style="max-width: 100%; max-height: 200px; display: none; border: 1px solid #ccc; border-radius: 8px;" />
+                            <img id="previewImg" src="#" alt="Vista previa" style="max-width: 100%; max-height: 200px; display: none; border: 1px solid #ccc; border-radius: 8px;" onerror="this.style.display='none'; document.getElementById('noPreviewText').style.display='inline';" />
+                            <span id="noPreviewText" class="text-muted" style="display:none">Sin previsualización</span>
                         </div>
                         <span asp-validation-for="FotoUrl" class="text-danger"></span>
                     </div>
@@ -76,6 +77,20 @@
                                     reader.readAsDataURL(e.target.files[0]);
                                 }
                             });
+
+                            // Mostrar/ocultar Observación de Estado según Disponible
+                            function toggleObservacionEstado() {
+                                var disponible = document.getElementById('Disponible').checked;
+                                var obsDiv = document.getElementById('observacionEstadoDiv');
+                                if (disponible) {
+                                    obsDiv.style.display = 'none';
+                                } else {
+                                    obsDiv.style.display = 'block';
+                                }
+                            }
+                            document.getElementById('Disponible').addEventListener('change', toggleObservacionEstado);
+                            // Inicializar al cargar
+                            toggleObservacionEstado();
                         </script>
                     }
                     <div class="d-flex justify-content-between mt-4">

@@ -30,17 +30,19 @@ namespace hotelv1.Controllers
 
 
         [Authorize(Roles = "Administrador,Recepcionista")]
-        public IActionResult Create()
+        public IActionResult Create(int? habitacionId)
         {
             var model = new ReservaViewModel
             {
                 Clientes = _context.Clientes.ToList(),
-                Habitaciones = _context.Habitaciones.Where(h => h.Disponible).ToList(),
+                Habitaciones = _context.Habitaciones.Where(h => h.Disponible || (habitacionId != null && h.HabitacionId == habitacionId)).ToList(),
                 Servicios = _context.Servicios.ToList(),
                 FechaEntrada = DateTime.Today,
                 FechaSalida = DateTime.Today.AddDays(1),
-                Estado = "Pendiente"
+                Estado = "Pendiente",
+                HabitacionId = habitacionId ?? 0
             };
+            ViewBag.HabitacionBloqueada = habitacionId != null;
             return View(model);
         }
 
@@ -174,6 +176,12 @@ namespace hotelv1.Controllers
             var reserva = _context.Reservas.Find(id);
             if (reserva != null)
             {
+                // Eliminar servicios asociados primero para evitar error de FK
+                var servicios = _context.ReservaServicios.Where(rs => rs.ReservaId == id).ToList();
+                if (servicios.Any())
+                {
+                    _context.ReservaServicios.RemoveRange(servicios);
+                }
                 _context.Reservas.Remove(reserva);
                 _context.SaveChanges();
             }

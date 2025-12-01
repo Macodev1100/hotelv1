@@ -1,5 +1,21 @@
+wwwroot\css\identity-custom.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\img\habitaciones\3fa8fc4d-cf60-4622-b7a8-2f44f5df559d.png
+wwwroot\img\habitaciones\418a7ff6-1655-4a0e-a62f-cde50e16727f.jpg
+wwwroot\img\habitaciones\52eef327-fecc-4541-8472-692fa98fd571.jpeg
+wwwroot\img\habitaciones\5c862476-58a2-4224-b79d-5eb04b2218ba.png
+wwwroot\img\habitaciones\7d31acfa-4e76-4b3f-be06-c83f4d41059f.png
+wwwroot\img\habitaciones\85cc4c45-05e2-4aa0-ac99-81395c283933.png
+wwwroot\img\habitaciones\8be6400f-a11d-4740-91af-30067320e868.png
+wwwroot\img\habitaciones\952967e0-952c-4abb-ae04-1342f5e621cd.jpeg
+wwwroot\img\habitaciones\9e5a35e6-001f-4a15-a609-f898be1b34f8.png
+wwwroot\img\habitaciones\a9b1beb2-420c-45bd-8157-34a1adfd46dd.png
+wwwroot\img\habitaciones\bd6bc982-3f5a-42fc-bef1-81e7fb336e48.png
+wwwroot\img\habitaciones\c6776ab3-57ab-47c1-a945-c22845303534.png
+wwwroot\img\habitaciones\d75f5620-aeac-42f0-81a5-13c1add3e100.png
+wwwroot\img\habitaciones\eaebf92c-4cf4-4094-80eb-1246dc9ef3f5.jpeg
+wwwroot\img\logo-hotel-cuenca.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -58,4 +74,3 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\css\identity-custom.css

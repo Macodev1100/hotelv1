@@ -524,7 +524,7 @@ namespace hotelv1.Migrations
                     b.HasOne("hotelv1.Models.Entities.Reserva", "Reserva")
                         .WithMany()
                         .HasForeignKey("ReservaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Reserva");
@@ -535,13 +535,13 @@ namespace hotelv1.Migrations
                     b.HasOne("hotelv1.Models.Entities.Cliente", "Cliente")
                         .WithMany()
                         .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("hotelv1.Models.Entities.Habitacion", "Habitacion")
                         .WithMany()
                         .HasForeignKey("HabitacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cliente");

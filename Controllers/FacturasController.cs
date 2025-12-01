@@ -19,7 +19,11 @@ namespace hotelv1.Controllers
 
         public IActionResult Index()
         {
-            var facturas = _context.Facturas.ToList();
+            // Incluir Reserva y Habitacion para evitar null en la vista
+            var facturas = _context.Facturas
+                .Include(f => f.Reserva)
+                .ThenInclude(r => r.Habitacion)
+                .ToList();
             return View(facturas);
         }
 

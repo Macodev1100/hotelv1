@@ -1,8 +1,12 @@
-using Microsoft.AspNetCore.Mvc;
-using hotelv1.ViewModels;
-using hotelv1.Data;
-using Microsoft.AspNetCore.Authorization;
+
+using System;
+using System.IO;
 using System.Linq;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using hotelv1.Data;
+using hotelv1.ViewModels;
 
 namespace hotelv1.Controllers
 {
@@ -15,6 +19,45 @@ namespace hotelv1.Controllers
         public HabitacionesController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        [Authorize(Roles = "Mantenimiento")]
+        public IActionResult EditEstado(int id)
+        {
+            var habitacion = _context.Habitaciones.Find(id);
+            if (habitacion == null)
+                return NotFound();
+            var model = new HabitacionViewModel
+            {
+                HabitacionId = habitacion.HabitacionId,
+                Numero = habitacion.Numero,
+                Tipo = habitacion.Tipo,
+                PrecioPorNoche = habitacion.PrecioPorNoche,
+                Disponible = habitacion.Disponible,
+                ObservacionEstado = habitacion.ObservacionEstado
+            };
+            return View("EditEstado", model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Mantenimiento")]
+        public IActionResult EditEstado(HabitacionViewModel model)
+        {
+            var habitacion = _context.Habitaciones.Find(model.HabitacionId);
+            if (habitacion == null)
+                return NotFound();
+            if (ModelState.IsValid)
+            {
+                habitacion.Disponible = model.Disponible;
+                habitacion.ObservacionEstado = model.ObservacionEstado;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            // Solo mostrar los campos permitidos
+            model.Numero = habitacion.Numero;
+            model.Tipo = habitacion.Tipo;
+            model.PrecioPorNoche = habitacion.PrecioPorNoche;
+            return View("EditEstado", model);
         }
 
         public IActionResult Index()
@@ -41,7 +84,7 @@ namespace hotelv1.Controllers
 
             // Procesar archivo de foto si se subió
             var file = Request.Form.Files["FotoFile"];
-            string fileName = null;
+            string? fileName = null;
             if (file != null && file.Length > 0)
             {
                 // Guardar en wwwroot/img/habitaciones
@@ -112,6 +155,25 @@ namespace hotelv1.Controllers
             {
                 ModelState.AddModelError("Numero", "Ya existe una habitación con ese número.");
             }
+            // Procesar archivo de foto si se subió uno nuevo
+            var file = Request.Form.Files["FotoFile"];
+            if (file != null && file.Length > 0)
+            {
+                var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/habitaciones");
+                if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var filePath = Path.Combine(uploads, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+                habitacion.FotoUrl = "/img/habitaciones/" + fileName;
+            }
+            else
+            {
+                // Si no se sube nueva foto, mantener la actual
+                habitacion.FotoUrl = model.FotoUrl;
+            }
             if (ModelState.IsValid)
             {
                 habitacion.Numero = model.Numero;
@@ -121,7 +183,6 @@ namespace hotelv1.Controllers
                 habitacion.Descripcion = model.Descripcion;
                 habitacion.ObservacionEstado = model.ObservacionEstado;
                 habitacion.Ocupada = model.Ocupada;
-                habitacion.FotoUrl = model.FotoUrl;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -153,7 +214,7 @@ namespace hotelv1.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Limpieza,Mantenimiento")]
+        [Authorize(Roles = "Mantenimiento")]
         public IActionResult ToggleEstado(int id)
         {
             var habitacion = _context.Habitaciones.Find(id);
