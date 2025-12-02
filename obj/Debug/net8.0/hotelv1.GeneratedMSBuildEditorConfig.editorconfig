@@ -46,6 +46,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcQ2hhbmdlUGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[X:/Project Folder/New folder/hotelv1/hotelv1/Areas/Identity/Pages/Account/Manage/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [X:/Project Folder/New folder/hotelv1/hotelv1/Areas/Identity/Pages/Account/Manage/Email.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcRW1haWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [X:/Project Folder/New folder/hotelv1/hotelv1/Areas/Identity/Pages/Account/Manage/PersonalData.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcUGVyc29uYWxEYXRhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[X:/Project Folder/New folder/hotelv1/hotelv1/Areas/Identity/Pages/Account/Manage/Telefono.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcVGVsZWZvbm8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [X:/Project Folder/New folder/hotelv1/hotelv1/Areas/Identity/Pages/Account/Manage/TwoFactorAuthentication.cshtml]
@@ -104,6 +112,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [X:/Project Folder/New folder/hotelv1/hotelv1/Views/Clientes/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[X:/Project Folder/New folder/hotelv1/hotelv1/Views/Clientes/EditTelefono.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcRWRpdFRlbGVmb25vLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [X:/Project Folder/New folder/hotelv1/hotelv1/Views/Clientes/Index.cshtml]

@@ -4,15 +4,15 @@
 }
 <style>
     .account-nav-modern {
-        background: #f1f5fa;
+        background: #f6fafd;
         border-radius: 18px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        box-shadow: 0 4px 24px rgba(120, 144, 156, 0.07);
         padding: 0.5rem 0.5rem 0.5rem 0.5rem;
         min-width: 220px;
-        border: 1px solid #e3e8ee;
+        border: 1px solid #e3f0ff;
     }
     .account-nav-modern .nav-link {
-        color: #222;
+        color: #234;
         font-weight: 500;
         font-size: 1.08rem;
         border-radius: 10px;
@@ -20,9 +20,9 @@
         transition: background 0.2s, color 0.2s;
     }
     .account-nav-modern .nav-link.active, .account-nav-modern .nav-link:focus, .account-nav-modern .nav-link:hover {
-        background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
-        color: #fff !important;
-        box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+        background: linear-gradient(90deg, #b2d8f7 0%, #e3f0ff 100%);
+        color: #234 !important;
+        box-shadow: 0 2px 8px rgba(120, 144, 156, 0.10);
     }
     .account-nav-modern .nav-link i {
         opacity: 0.85;
@@ -30,15 +30,11 @@
 </style>
 <ul class="nav flex-column mb-4 account-nav-modern">
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">
-            <i class="fas fa-user-circle me-2"></i>Perfil
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="info" asp-page="./Index">
+            <i class="fas fa-info-circle me-2"></i>Información
         </a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">
-            <i class="fas fa-envelope me-2"></i>Correo electrónico
-        </a>
-    </li>
+    <!-- Eliminada la pestaña de edición de correo electrónico -->
     <li class="nav-item">
         <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">
             <i class="fas fa-key me-2"></i>Contraseña
@@ -52,14 +48,5 @@
             </a>
         </li>
     }
-    <li class="nav-item">
-        <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">
-            <i class="fas fa-shield-alt me-2"></i>Autenticación en dos pasos
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">
-            <i class="fas fa-id-card me-2"></i>Datos personales
-        </a>
-    </li>
+
 </ul>

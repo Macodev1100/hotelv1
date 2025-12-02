@@ -37,12 +37,12 @@ namespace hotelv1.Controllers
         {
             // Datos reales
             var hoy = DateTime.Today;
-            ViewBag.Habitaciones = _context.Habitaciones.Count();
-            ViewBag.HabitacionesDisponibles = _context.Habitaciones.Count(h => h.Disponible);
-            ViewBag.Clientes = _context.Clientes.Count();
-            ViewBag.Empleados = _context.Empleados.Count();
-            ViewBag.Reservas = _context.Reservas.Count();
-            ViewBag.Facturacion = _context.Facturas.Sum(f => (decimal?)f.MontoTotal) ?? 0;
+            ViewBag.Habitaciones = _context.Habitaciones?.Count() ?? 0;
+            ViewBag.HabitacionesDisponibles = _context.Habitaciones?.Count(h => h.Disponible) ?? 0;
+            ViewBag.Clientes = _context.Clientes?.Count() ?? 0;
+            ViewBag.Empleados = _context.Empleados?.Count() ?? 0;
+            ViewBag.Reservas = _context.Reservas?.Count() ?? 0;
+            ViewBag.Facturacion = _context.Facturas?.Sum(f => (decimal?)f.MontoTotal) ?? 0;
 
             // Distribución de habitaciones por tipo
             var distribucion = _context.Habitaciones
@@ -80,7 +80,7 @@ namespace hotelv1.Controllers
                 .OrderByDescending(x => x.TotalReservas)
                 .Take(4)
                 .ToList();
-            var habitaciones = _context.Habitaciones.ToList();
+            var habitaciones = _context.Habitaciones?.ToList() ?? new List<hotelv1.Models.Entities.Habitacion>();
             ViewBag.RankingHabitaciones = rankingHabitaciones
                 .Select(r => new {
                     Nombre = habitaciones.FirstOrDefault(h => h.HabitacionId == r.HabitacionId)?.Numero + " (" + habitaciones.FirstOrDefault(h => h.HabitacionId == r.HabitacionId)?.Tipo + ")",
@@ -98,10 +98,10 @@ namespace hotelv1.Controllers
             ViewBag.Notificaciones = notificaciones;
 
             // Ocupación actual
-            var ocupadas = _context.Habitaciones.Count(h => !h.Disponible);
+            var ocupadas = _context.Habitaciones?.Count(h => !h.Disponible) ?? 0;
             var libres = ViewBag.HabitacionesDisponibles;
             var total = ViewBag.Habitaciones;
-            ViewBag.OcupacionPorc = total > 0 ? (int)Math.Round((double)ocupadas * 100 / total) : 0;
+            ViewBag.OcupacionPorc = (total > 0 && ocupadas >= 0) ? (int)Math.Round((double)ocupadas * 100 / total) : 0;
             ViewBag.Ocupadas = ocupadas;
             ViewBag.Libres = libres;
 

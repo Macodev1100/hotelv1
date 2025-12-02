@@ -2,131 +2,141 @@
 @{
     ViewData["Title"] = "Nueva Reserva";
 }
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8 col-lg-6">
-        <div class="card shadow-lg border-0">
-            <div class="card-header bg-primary text-white text-center">
-                <h3 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Nueva Reserva</h3>
-            </div>
-            <div class="card-body p-4">
-                <form asp-action="Create" method="post" autocomplete="off">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold"><i class="fas fa-concierge-bell me-1"></i>Servicios</label>
-                        <div>
-                            @if (Model.Servicios != null && Model.Servicios.Any())
-                            {
-                                foreach (var s in Model.Servicios)
-                                {
-                                    var isChecked = Model.ServiciosSeleccionados != null && Model.ServiciosSeleccionados.Contains(s.ServicioId);
-                                    <div class="form-check form-check-inline mb-2">
-                                        <input class="form-check-input" type="checkbox" name="ServiciosSeleccionados" id="servicio_@s.ServicioId" value="@s.ServicioId" @(isChecked ? "checked" : "") />
-                                        <label class="form-check-label" for="servicio_@s.ServicioId">
-                                            @s.Nombre (@s.Precio.ToString("C"))
-                                        </label>
-                                    </div>
-                                }
-                            }
-                            else
-                            {
-                                <span class="text-muted">No hay servicios disponibles.</span>
-                            }
-                        </div>
-                        <span asp-validation-for="ServiciosSeleccionados" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="ClienteId" class="form-label fw-semibold"><i class="fas fa-user me-1"></i>Cliente</label>
-                        <select asp-for="ClienteId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Clientes, "ClienteId", "Nombre"))">
-                            <option value="">Seleccione un cliente</option>
-                        </select>
-                        <span asp-validation-for="ClienteId" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="HabitacionId" class="form-label fw-semibold"><i class="fas fa-bed me-1"></i>Habitación</label>
-                        @if (ViewBag.HabitacionBloqueada == true)
-                        {
-                            <select asp-for="HabitacionId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Habitaciones, "HabitacionId", "Numero"))" disabled>
-                                <option value="">Seleccione una habitación</option>
-                                @foreach (var h in Model.Habitaciones)
-                                {
-                                    @if (Model.HabitacionId == h.HabitacionId)
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeInUp animate__faster">
+                <div class="card-body p-5">
+                    <h2 class="mb-4 fw-bold text-info"><i class="fas fa-calendar-plus me-2"></i>Nueva Reserva</h2>
+                    <form asp-action="Create" method="post" autocomplete="off">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold"><i class="fas fa-concierge-bell me-1"></i>Servicios</label>
+                                <div>
+                                    @if (Model.Servicios != null && Model.Servicios.Any())
                                     {
-                                        <option value="@h.HabitacionId" selected>@h.Numero</option>
+                                        foreach (var s in Model.Servicios)
+                                        {
+                                            var isChecked = Model.ServiciosSeleccionados != null && Model.ServiciosSeleccionados.Contains(s.ServicioId);
+                                            <div class="form-check form-check-inline mb-2">
+                                                <input class="form-check-input" type="checkbox" name="ServiciosSeleccionados" id="servicio_@s.ServicioId" value="@s.ServicioId" @(isChecked ? "checked" : "") />
+                                                <label class="form-check-label" for="servicio_@s.ServicioId">
+                                                    @s.Nombre (@s.Precio.ToString("C"))
+                                                </label>
+                                            </div>
+                                        }
                                     }
                                     else
                                     {
-                                        <option value="@h.HabitacionId">@h.Numero</option>
+                                        <span class="text-muted">No hay servicios disponibles.</span>
                                     }
+                                </div>
+                                <span asp-validation-for="ServiciosSeleccionados" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ClienteId" class="form-label fw-semibold"><i class="fas fa-user me-1"></i>Cliente</label>
+                                <select asp-for="ClienteId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Clientes, "ClienteId", "Nombre"))">
+                                    <option value="">Seleccione un cliente</option>
+                                </select>
+                                <span asp-validation-for="ClienteId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="HabitacionId" class="form-label fw-semibold"><i class="fas fa-bed me-1"></i>Habitación</label>
+                                @if (ViewBag.HabitacionBloqueada == true)
+                                {
+                                    <select asp-for="HabitacionId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Habitaciones, "HabitacionId", "Numero"))" disabled>
+                                        <option value="">Seleccione una habitación</option>
+                                        @foreach (var h in Model.Habitaciones)
+                                        {
+                                            @if (Model.HabitacionId == h.HabitacionId)
+                                            {
+                                                <option value="@h.HabitacionId" selected>@h.Numero</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@h.HabitacionId">@h.Numero</option>
+                                            }
+                                        }
+                                    </select>
+                                    <input type="hidden" asp-for="HabitacionId" />
                                 }
-                            </select>
-                            <input type="hidden" asp-for="HabitacionId" />
-                        }
-                        else
-                        {
-                            <select asp-for="HabitacionId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Habitaciones, "HabitacionId", "Numero"))">
-                                <option value="">Seleccione una habitación</option>
-                            </select>
-                        }
-                        <span asp-validation-for="HabitacionId" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="FechaEntrada" class="form-label fw-semibold"><i class="fas fa-calendar-day me-1"></i>Fecha de Entrada</label>
-                        <input asp-for="FechaEntrada" class="form-control form-control-lg" type="date" />
-                        <span asp-validation-for="FechaEntrada" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="FechaSalida" class="form-label fw-semibold"><i class="fas fa-calendar-day me-1"></i>Fecha de Salida</label>
-                        <input asp-for="FechaSalida" class="form-control form-control-lg" type="date" />
-                        <span asp-validation-for="FechaSalida" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Total" class="form-label fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Total</label>
-                        <input asp-for="Total" class="form-control form-control-lg" placeholder="Total de la reserva" readonly id="Total" />
-                        <span asp-validation-for="Total" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Estado" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Estado</label>
-                        <select asp-for="Estado" class="form-select form-select-lg">
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="Pagada">Pagada</option>
-                            <option value="Cancelada">Cancelada</option>
-                        </select>
-                        <span asp-validation-for="Estado" class="text-danger"></span>
-                                            <label asp-for="MetodoPago" class="form-label fw-semibold"><i class="fas fa-credit-card me-1"></i>Método de Pago</label>
-                                            <select asp-for="MetodoPago" class="form-select form-select-lg" asp-items="@(new SelectList(Model.MetodosPago))">
-                                                <option value="">Seleccione un método de pago</option>
-                                            </select>
-                                            <span asp-validation-for="MetodoPago" class="text-danger"></span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
-                        <a href="/Reservas" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
-                    </div>
-                </form>
-                            <script>
-                            function calcularTotal() {
-                                var habitaciones = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Habitaciones.Select(h => new { h.HabitacionId, h.PrecioPorNoche })));
-                                var servicios = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Servicios.Select(s => new { s.ServicioId, s.Precio })));
-                                var habitacionId = parseInt(document.getElementById('HabitacionId').value);
-                                var precio = habitaciones.find(h => h.HabitacionId === habitacionId)?.PrecioPorNoche || 0;
-                                var fechaEntrada = new Date(document.getElementById('FechaEntrada').value);
-                                var fechaSalida = new Date(document.getElementById('FechaSalida').value);
-                                var dias = (fechaSalida - fechaEntrada) / (1000 * 60 * 60 * 24);
-                                dias = isNaN(dias) || dias < 1 ? 1 : dias;
-                                var total = precio * dias;
-                                // Sumar servicios seleccionados (checkboxes)
-                                var selected = Array.from(document.querySelectorAll('input[name="ServiciosSeleccionados"]:checked')).map(cb => parseInt(cb.value));
-                                var totalServicios = servicios.filter(s => selected.includes(s.ServicioId)).reduce((acc, s) => acc + s.Precio, 0);
-                                total += totalServicios;
-                                document.getElementById('Total').value = total.toFixed(2);
-                            }
-                            document.getElementById('HabitacionId').addEventListener('change', calcularTotal);
-                            document.getElementById('FechaEntrada').addEventListener('change', calcularTotal);
-                            document.getElementById('FechaSalida').addEventListener('change', calcularTotal);
-                            document.querySelectorAll('input[name="ServiciosSeleccionados"]').forEach(cb => cb.addEventListener('change', calcularTotal));
-                            window.addEventListener('DOMContentLoaded', calcularTotal);
-                            </script>
+                                else
+                                {
+                                    <select asp-for="HabitacionId" class="form-select form-select-lg" asp-items="@(new SelectList(Model.Habitaciones, "HabitacionId", "Numero"))">
+                                        <option value="">Seleccione una habitación</option>
+                                    </select>
+                                }
+                                <span asp-validation-for="HabitacionId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="FechaEntrada" class="form-label fw-semibold"><i class="fas fa-calendar-day me-1"></i>Fecha de Entrada</label>
+                                <input asp-for="FechaEntrada" class="form-control form-control-lg" type="date" />
+                                <span asp-validation-for="FechaEntrada" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="FechaSalida" class="form-label fw-semibold"><i class="fas fa-calendar-day me-1"></i>Fecha de Salida</label>
+                                <input asp-for="FechaSalida" class="form-control form-control-lg" type="date" />
+                                <span asp-validation-for="FechaSalida" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Total" class="form-label fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Total</label>
+                                <input asp-for="Total" class="form-control form-control-lg" placeholder="Total de la reserva" readonly id="Total" />
+                                <span asp-validation-for="Total" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Estado" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Estado</label>
+                                <select asp-for="Estado" class="form-select form-select-lg">
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Pagada">Pagada</option>
+                                    <option value="Cancelada">Cancelada</option>
+                                </select>
+                                <span asp-validation-for="Estado" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="MetodoPago" class="form-label fw-semibold"><i class="fas fa-credit-card me-1"></i>Método de Pago</label>
+                                <select asp-for="MetodoPago" class="form-select form-select-lg" asp-items="@(new SelectList(Model.MetodosPago))">
+                                    <option value="">Seleccione un método de pago</option>
+                                </select>
+                                <span asp-validation-for="MetodoPago" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex justify-content-end gap-2">
+                            <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
+                            <a href="/Reservas" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}
+@section Scripts {
+<script>
+function calcularTotal() {
+    var habitaciones = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Habitaciones.Select(h => new { h.HabitacionId, h.PrecioPorNoche })));
+    var servicios = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Servicios.Select(s => new { s.ServicioId, s.Precio })));
+    var habitacionId = parseInt(document.getElementById('HabitacionId').value);
+    var precio = habitaciones.find(h => h.HabitacionId === habitacionId)?.PrecioPorNoche || 0;
+    var fechaEntrada = new Date(document.getElementById('FechaEntrada').value);
+    var fechaSalida = new Date(document.getElementById('FechaSalida').value);
+    var dias = (fechaSalida - fechaEntrada) / (1000 * 60 * 60 * 24);
+    dias = isNaN(dias) || dias < 1 ? 1 : dias;
+    var total = precio * dias;
+    // Sumar servicios seleccionados (checkboxes)
+    var selected = Array.from(document.querySelectorAll('input[name="ServiciosSeleccionados"]:checked')).map(cb => parseInt(cb.value));
+    var totalServicios = servicios.filter(s => selected.includes(s.ServicioId)).reduce((acc, s) => acc + s.Precio, 0);
+    total += totalServicios;
+    document.getElementById('Total').value = total.toFixed(2);
+}
+document.getElementById('HabitacionId').addEventListener('change', calcularTotal);
+document.getElementById('FechaEntrada').addEventListener('change', calcularTotal);
+document.getElementById('FechaSalida').addEventListener('change', calcularTotal);
+document.querySelectorAll('input[name="ServiciosSeleccionados"]').forEach(cb => cb.addEventListener('change', calcularTotal));
+window.addEventListener('DOMContentLoaded', calcularTotal);
+</script>
+}

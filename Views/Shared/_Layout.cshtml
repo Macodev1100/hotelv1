@@ -12,12 +12,32 @@
         html, body {
             background: #dbeafe !important; /* Celeste muy suave, uniforme en todo el sistema */
         }
-        .navbar { background: linear-gradient(90deg, #003366 0%, #005fa3 100%); }
-        .navbar-brand, .nav-link, .dropdown-item { color: #fff !important; }
-        .navbar-brand { font-weight: bold; letter-spacing: 1px; }
-        .nav-link.active, .nav-link:hover { color: #ffd700 !important; }
-        .dropdown-menu { background: #003366; }
-        .dropdown-item:hover { background: #005fa3; color: #ffd700 !important; }
+        .navbar {
+            background: #fff;
+            border-bottom: 2px solid #eaf3fb;
+            box-shadow: 0 2px 12px rgba(0,95,163,0.07);
+            padding-top: 0.3rem; padding-bottom: 0.3rem;
+        }
+        .navbar-brand {
+            display: flex; align-items: center; gap: 0.7rem;
+            font-weight: bold; letter-spacing: 1px; color: #003366 !important;
+            font-size: 1.5rem;
+        }
+        .navbar-brand img {
+            height: 38px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,95,163,0.10);
+        }
+        .nav-link, .dropdown-item {
+            color: #003366 !important;
+            font-weight: 600;
+            font-size: 1.08rem;
+            border-radius: 8px;
+            transition: background 0.18s, color 0.18s;
+        }
+        .nav-link.active, .nav-link:hover, .dropdown-item:hover {
+            background: #eaf3fb;
+            color: #005fa3 !important;
+        }
+        .dropdown-menu { background: #fff; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,95,163,0.07); }
         .btn-primary { background: #005fa3; border: none; }
         .btn-primary:hover { background: #003366; }
         .form-control:focus { border-color: #005fa3; box-shadow: 0 0 0 0.2rem rgba(0,95,163,.25); }
@@ -34,7 +54,10 @@
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                 <div class="container-fluid">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">hotelv1</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="/img/logo-hotel-cuenca2.png" alt="Hotel Cuenca" />
+                        HOTEL CUENCA
+                    </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -109,6 +132,8 @@
             </nav>
         </header>
     }
+
+    @await RenderSectionAsync("Styles", required: false)
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

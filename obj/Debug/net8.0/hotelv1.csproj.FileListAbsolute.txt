@@ -256,5 +256,4 @@ X:\Project Folder\New folder\hotelv1\hotelv1\obj\Debug\net8.0\refint\hotelv1.dll
 X:\Project Folder\New folder\hotelv1\hotelv1\obj\Debug\net8.0\hotelv1.pdb
 X:\Project Folder\New folder\hotelv1\hotelv1\obj\Debug\net8.0\hotelv1.genruntimeconfig.cache
 X:\Project Folder\New folder\hotelv1\hotelv1\obj\Debug\net8.0\ref\hotelv1.dll
-X:\Project Folder\New folder\hotelv1\hotelv1\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 X:\Project Folder\New folder\hotelv1\hotelv1\obj\Debug\net8.0\hotelv1.sourcelink.json

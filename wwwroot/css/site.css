@@ -1,3 +1,158 @@
+/* --- Modernización general de vistas --- */
+body, html {
+  background: #f4f8fb !important;
+  color: #222;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+/* Tablas modernas */
+.table {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,95,163,0.07);
+}
+.table th, .table td {
+  vertical-align: middle;
+  border-top: none;
+  border-bottom: 1px solid #e3e8ee;
+  padding: 0.85rem 0.75rem;
+}
+.table thead th {
+  background: #eaf3fb;
+  color: #003366;
+  font-weight: 700;
+  border-bottom: 2px solid #b6d4fa;
+}
+.table-hover tbody tr:hover {
+  background: #f0f6ff;
+  transition: background 0.2s;
+}
+
+/* Botones modernos */
+.btn, .btn-sm, .btn-primary, .btn-outline-primary, .btn-danger, .btn-outline-danger, .btn-warning, .btn-outline-warning {
+  border-radius: 8px !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: box-shadow 0.15s, background 0.15s, color 0.15s;
+  box-shadow: 0 1px 4px rgba(0,95,163,0.07);
+}
+.btn-primary, .btn-primary:focus {
+  background: linear-gradient(90deg, #005fa3 0%, #003366 100%);
+  border: none;
+}
+.btn-primary:hover {
+  background: #003366;
+  color: #ffd700;
+}
+.btn-outline-primary {
+  border: 2px solid #005fa3;
+  color: #005fa3;
+}
+.btn-outline-primary:hover {
+  background: #005fa3;
+  color: #fff;
+}
+.btn-danger, .btn-outline-danger {
+  border: none;
+  background: #e57373;
+  color: #fff;
+}
+.btn-danger:hover, .btn-outline-danger:hover {
+  background: #c62828;
+  color: #fff;
+}
+.btn-warning, .btn-outline-warning {
+  background: #ffd700;
+  color: #003366;
+  border: none;
+}
+.btn-warning:hover, .btn-outline-warning:hover {
+  background: #ffe066;
+  color: #003366;
+}
+
+/* Badges y estados */
+.badge {
+  border-radius: 8px;
+  font-size: 1em;
+  padding: 0.4em 0.9em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.badge.bg-success {
+  background: linear-gradient(90deg, #4caf50 0%, #43a047 100%);
+  color: #fff;
+}
+.badge.bg-danger {
+  background: linear-gradient(90deg, #e57373 0%, #c62828 100%);
+  color: #fff;
+}
+.badge.bg-warning, .badge.bg-warning.text-dark {
+  background: linear-gradient(90deg, #ffd700 0%, #ffe066 100%);
+  color: #003366 !important;
+}
+.badge.bg-secondary {
+  background: #b0bec5;
+  color: #fff;
+}
+
+/* Tarjetas y paneles */
+.card {
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,95,163,0.08);
+  border: none;
+}
+.card-body {
+  padding: 1.5rem 1.5rem;
+}
+
+/* Formularios */
+.form-control {
+  border-radius: 8px;
+  border: 1.5px solid #b6d4fa;
+  background: #f8fafc;
+  font-size: 1.08em;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-control:focus {
+  border-color: #005fa3;
+  box-shadow: 0 0 0 0.2rem rgba(0,95,163,.12);
+}
+.form-label {
+  font-weight: 600;
+  color: #003366;
+}
+.form-select {
+  border-radius: 8px;
+  border: 1.5px solid #b6d4fa;
+  background: #f8fafc;
+  font-size: 1.08em;
+}
+
+/* Animaciones sutiles */
+.btn, .card, .table, .badge {
+  transition: all 0.15s cubic-bezier(.4,0,.2,1);
+}
+
+/* Responsive mejoras */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .table th, .table td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.98em;
+  }
+  .card-body {
+    padding: 1rem 0.5rem;
+  }
+}
 /* Panel de login/registro/perfil moderno */
 .login-panel {
   background: #fff;

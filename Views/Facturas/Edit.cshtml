@@ -2,81 +2,85 @@
 @{
     ViewData["Title"] = "Editar Factura";
 }
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8 col-lg-6">
-        <div class="card shadow-lg border-0">
-            <div class="card-header bg-primary text-white text-center">
-                <h3 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>Editar Factura</h3>
-            </div>
-            <div class="card-body p-4">
-                <form asp-action="Edit" method="post" autocomplete="off">
-                    <input type="hidden" asp-for="FacturaId" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                    <div class="mb-3">
-                        <label asp-for="ReservaId" class="form-label fw-semibold"><i class="fas fa-calendar-check me-1"></i>Reserva</label>
-                        @if ((Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>()).Any())
-                        {
-                            var reservaEncontrada = Model.Reservas.Any(r => r.ReservaId == Model.ReservaId);
-                            <select asp-for="ReservaId" class="form-select form-select-lg" id="reservaSelect">
-                                <option value="">Seleccione una reserva</option>
-                                @foreach (var r in Model.Reservas)
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeInUp animate__faster">
+                <div class="card-body p-5">
+                    <h2 class="mb-4 fw-bold text-info"><i class="fas fa-file-invoice-dollar me-2"></i>Editar Factura</h2>
+                    <form asp-action="Edit" method="post" autocomplete="off">
+                        <input type="hidden" asp-for="FacturaId" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="ReservaId" class="form-label fw-semibold"><i class="fas fa-calendar-check me-1"></i>Reserva</label>
+                                @if ((Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>()).Any())
                                 {
-                                    var habNum = r.Habitacion != null ? r.Habitacion.Numero : "Sin habitación";
-                                    var fechas = r.FechaEntrada.ToString("dd/MM/yyyy") + " - " + r.FechaSalida.ToString("dd/MM/yyyy");
-                                    <option value="@r.ReservaId" selected="@(Model.ReservaId == r.ReservaId ? "selected" : null)">Hab. @habNum | @fechas</option>
-                                }
-                            </select>
-                            @if (!reservaEncontrada && Model.ReservaId != 0)
-                            {
-                                <div class="alert alert-danger mt-2">La reserva seleccionada ya no existe o fue eliminada.</div>
-                            }
-                        }
-                        else
-                        {
-                            <div class="alert alert-warning mb-0">No hay reservas disponibles para facturar.</div>
-                        }
-                        <span asp-validation-for="ReservaId" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="FechaEmision" class="form-label fw-semibold"><i class="fas fa-calendar-day me-1"></i>Fecha de Emisión</label>
-                        <input asp-for="FechaEmision" class="form-control form-control-lg" type="date" />
-                        <span asp-validation-for="FechaEmision" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="MontoTotal" class="form-label fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Monto Total</label>
-                        <input asp-for="MontoTotal" class="form-control form-control-lg" placeholder="Monto total de la factura" id="montoTotalInput" />
-                        <span asp-validation-for="MontoTotal" class="text-danger"></span>
-                    </div>
-                    @section Scripts {
-                        @if ((Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>()).Any())
-                        {
-                        <script>
-                            // Diccionario ReservaId -> Total
-                            var reservas = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject((Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>()).ToDictionary(r => r.ReservaId, r => r.Total)));
-                            $(document).ready(function () {
-                                $('#reservaSelect').on('change', function () {
-                                    var selectedId = $(this).val();
-                                    if (reservas[selectedId]) {
-                                        $('#montoTotalInput').val(reservas[selectedId]);
-                                    } else {
-                                        $('#montoTotalInput').val('');
+                                    var reservaEncontrada = Model.Reservas.Any(r => r.ReservaId == Model.ReservaId);
+                                    <select asp-for="ReservaId" class="form-select form-select-lg" id="reservaSelect">
+                                        <option value="">Seleccione una reserva</option>
+                                        @foreach (var r in Model.Reservas)
+                                        {
+                                            var habNum = r.Habitacion != null ? r.Habitacion.Numero : "Sin habitación";
+                                            var fechas = r.FechaEntrada.ToString("dd/MM/yyyy") + " - " + r.FechaSalida.ToString("dd/MM/yyyy");
+                                            <option value="@r.ReservaId" selected="@(Model.ReservaId == r.ReservaId ? "selected" : null)">Hab. @habNum | @fechas</option>
+                                        }
+                                    </select>
+                                    @if (!reservaEncontrada && Model.ReservaId != 0)
+                                    {
+                                        <div class="alert alert-danger mt-2">La reserva seleccionada ya no existe o fue eliminada.</div>
                                     }
-                                });
-                            });
-                        </script>
-                        }
-                    }
-                    <div class="mb-3">
-                        <label asp-for="Detalle" class="form-label fw-semibold"><i class="fas fa-align-left me-1"></i>Detalle</label>
-                        <input asp-for="Detalle" class="form-control form-control-lg" placeholder="Detalle de la factura" />
-                        <span asp-validation-for="Detalle" class="text-danger"></span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
-                        <a href="/Facturas" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
-                    </div>
-                </form>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-warning mb-0">No hay reservas disponibles para facturar.</div>
+                                }
+                                <span asp-validation-for="ReservaId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="FechaEmision" class="form-label fw-semibold"><i class="fas fa-calendar-day me-1"></i>Fecha de Emisión</label>
+                                <input asp-for="FechaEmision" class="form-control form-control-lg" type="date" />
+                                <span asp-validation-for="FechaEmision" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="MontoTotal" class="form-label fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Monto Total</label>
+                                <input asp-for="MontoTotal" class="form-control form-control-lg" placeholder="Monto total de la factura" id="montoTotalInput" />
+                                <span asp-validation-for="MontoTotal" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Detalle" class="form-label fw-semibold"><i class="fas fa-align-left me-1"></i>Detalle</label>
+                                <input asp-for="Detalle" class="form-control form-control-lg" placeholder="Detalle de la factura" />
+                                <span asp-validation-for="Detalle" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="mt-4 d-flex justify-content-end gap-2">
+                            <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
+                            <a href="/Facturas" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}
+@section Scripts {
+    @if ((Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>()).Any())
+    {
+    <script>
+        var reservas = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject((Model.Reservas ?? Enumerable.Empty<hotelv1.Models.Entities.Reserva>()).ToDictionary(r => r.ReservaId, r => r.Total)));
+        $(document).ready(function () {
+            $('#reservaSelect').on('change', function () {
+                var selectedId = $(this).val();
+                if (reservas[selectedId]) {
+                    $('#montoTotalInput').val(reservas[selectedId]);
+                } else {
+                    $('#montoTotalInput').val('');
+                }
+            });
+        });
+    </script>
+    }
+}

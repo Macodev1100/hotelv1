@@ -1,104 +1,126 @@
+
 @model hotelv1.ViewModels.HabitacionViewModel
 @{
     ViewData["Title"] = "Nueva Habitación";
 }
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8 col-lg-6">
-        <div class="card shadow-lg border-0">
-            <div class="card-header bg-primary text-white text-center">
-                <h3 class="mb-0"><i class="fas fa-bed me-2"></i>Nueva Habitación</h3>
-            </div>
-            <div class="card-body p-4">
-                <form asp-action="Create" method="post" autocomplete="off" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                    <div class="mb-3">
-                        <label asp-for="Numero" class="form-label fw-semibold"><i class="fas fa-hashtag me-1"></i>Número</label>
-                        <input asp-for="Numero" class="form-control form-control-lg" placeholder="Ej: 101" />
-                        <span asp-validation-for="Numero" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Tipo" class="form-label fw-semibold"><i class="fas fa-door-open me-1"></i>Tipo</label>
-                        <select asp-for="Tipo" class="form-control form-control-lg" asp-items="@(new SelectList(Model.TiposDisponibles))">
-                            <option value="">Seleccione un tipo</option>
-                        </select>
-                        <span asp-validation-for="Tipo" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="PrecioPorNoche" class="form-label fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Precio por Noche</label>
-                        <input asp-for="PrecioPorNoche" class="form-control form-control-lg" placeholder="Ej: 1200.00" />
-                        <span asp-validation-for="PrecioPorNoche" class="text-danger"></span>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input asp-for="Disponible" class="form-check-input" id="Disponible" />
-                        <label asp-for="Disponible" class="form-check-label fw-semibold" for="Disponible"><i class="fas fa-check-circle me-1"></i>Disponible</label>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input asp-for="Ocupada" class="form-check-input" id="Ocupada" />
-                        <label asp-for="Ocupada" class="form-check-label fw-semibold" for="Ocupada"><i class="fas fa-user-lock me-1"></i>Ocupada</label>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Descripcion" class="form-label fw-semibold"><i class="fas fa-align-left me-1"></i>Descripción</label>
-                        <input asp-for="Descripcion" class="form-control form-control-lg" placeholder="Descripción breve de la habitación" />
-                        <span asp-validation-for="Descripcion" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3" id="observacionEstadoDiv">
-                        <label asp-for="ObservacionEstado" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Observación de Estado</label>
-                        <input asp-for="ObservacionEstado" class="form-control form-control-lg" placeholder="Ej: En mantenimiento, falta limpieza, etc." />
-                        <span asp-validation-for="ObservacionEstado" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="FotoUrl" class="form-label fw-semibold"><i class="fas fa-image me-1"></i>Foto</label>
-                        <div class="input-group">
-                            <input type="text" asp-for="FotoUrl" class="form-control form-control-lg" placeholder="Nombre de archivo de la foto" readonly id="FotoUrlInput" />
-                            <button type="button" class="btn btn-outline-secondary" id="btnSelectFoto"><i class="fas fa-folder-open"></i> Seleccionar archivo</button>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4 animate__animated animate__fadeInUp animate__faster">
+                <div class="card-body p-5">
+                    <h2 class="mb-4 fw-bold text-info"><i class="fas fa-bed me-2"></i>Nueva Habitación</h2>
+                    <form asp-action="Create" method="post" autocomplete="off" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Numero" class="form-label fw-semibold"><i class="fas fa-hashtag me-1"></i>Número</label>
+                                <input asp-for="Numero" class="form-control form-control-lg" placeholder="Ej: 101" />
+                                <span asp-validation-for="Numero" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Tipo" class="form-label fw-semibold"><i class="fas fa-door-open me-1"></i>Tipo</label>
+                                <select asp-for="Tipo" class="form-select form-select-lg" asp-items="@(new SelectList(Model.TiposDisponibles))">
+                                    <option value="">Seleccione un tipo</option>
+                                </select>
+                                <span asp-validation-for="Tipo" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PrecioPorNoche" class="form-label fw-semibold"><i class="fas fa-dollar-sign me-1"></i>Precio por Noche</label>
+                                <input asp-for="PrecioPorNoche" class="form-control form-control-lg" placeholder="Ej: 1200.00" />
+                                <span asp-validation-for="PrecioPorNoche" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Descripcion" class="form-label fw-semibold"><i class="fas fa-align-left me-1"></i>Descripción</label>
+                                <input asp-for="Descripcion" class="form-control form-control-lg" placeholder="Descripción breve de la habitación" />
+                                <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ObservacionEstado" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Observación de Estado</label>
+                                <input asp-for="ObservacionEstado" class="form-control form-control-lg" placeholder="Ej: En mantenimiento, falta limpieza, etc." id="ObservacionEstadoInput" />
+                                <span asp-validation-for="ObservacionEstado" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="FotoUrl" class="form-label fw-semibold"><i class="fas fa-image me-1"></i>Foto</label>
+                                <div class="input-group">
+                                    <input type="text" asp-for="FotoUrl" class="form-control form-control-lg" placeholder="Nombre de archivo de la foto" readonly id="FotoUrlInput" />
+                                    <button type="button" class="btn btn-outline-secondary" id="btnSelectFoto"><i class="fas fa-folder-open"></i> Seleccionar archivo</button>
+                                </div>
+                                <input type="file" id="fileInput" name="FotoFile" style="display:none" accept="image/*" />
+                                <div class="mt-2">
+                                    <img id="previewImg" src="#" alt="Vista previa" style="max-width: 100%; max-height: 200px; display: none; border: 1px solid #ccc; border-radius: 8px;" onerror="this.style.display='none'; document.getElementById('noPreviewText').style.display='inline';" />
+                                    <span id="noPreviewText" class="text-muted" style="display:none">Sin previsualización</span>
+                                </div>
+                                <span asp-validation-for="FotoUrl" class="text-danger small"></span>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check form-switch mt-2">
+                                    <input asp-for="Disponible" class="form-check-input" id="Disponible" />
+                                    <label asp-for="Disponible" class="form-check-label fw-semibold" for="Disponible"><i class="fas fa-check-circle me-1"></i>Disponible</label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input asp-for="Ocupada" class="form-check-input" id="Ocupada" />
+                                    <label asp-for="Ocupada" class="form-check-label fw-semibold" for="Ocupada"><i class="fas fa-user-lock me-1"></i>Ocupada</label>
+                                </div>
+                            </div>
                         </div>
-                        <input type="file" id="fileInput" name="FotoFile" style="display:none" accept="image/*" />
-                        <div class="mt-2">
-                            <img id="previewImg" src="#" alt="Vista previa" style="max-width: 100%; max-height: 200px; display: none; border: 1px solid #ccc; border-radius: 8px;" onerror="this.style.display='none'; document.getElementById('noPreviewText').style.display='inline';" />
-                            <span id="noPreviewText" class="text-muted" style="display:none">Sin previsualización</span>
+                        <div class="mt-4 d-flex justify-content-end gap-2">
+                            <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
+                            <a href="/Habitaciones" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
                         </div>
-                        <span asp-validation-for="FotoUrl" class="text-danger"></span>
-                    </div>
-                    @section Scripts {
-                        <script>
-                            document.getElementById('btnSelectFoto').addEventListener('click', function () {
-                                document.getElementById('fileInput').click();
-                            });
-                            document.getElementById('fileInput').addEventListener('change', function (e) {
-                                if (e.target.files.length > 0) {
-                                    document.getElementById('FotoUrlInput').value = e.target.files[0].name;
-                                    // Vista previa
-                                    var reader = new FileReader();
-                                    reader.onload = function (ev) {
-                                        var img = document.getElementById('previewImg');
-                                        img.src = ev.target.result;
-                                        img.style.display = 'block';
-                                    };
-                                    reader.readAsDataURL(e.target.files[0]);
-                                }
-                            });
-
-                            // Mostrar/ocultar Observación de Estado según Disponible
-                            function toggleObservacionEstado() {
-                                var disponible = document.getElementById('Disponible').checked;
-                                var obsDiv = document.getElementById('observacionEstadoDiv');
-                                if (disponible) {
-                                    obsDiv.style.display = 'none';
-                                } else {
-                                    obsDiv.style.display = 'block';
-                                }
-                            }
-                            document.getElementById('Disponible').addEventListener('change', toggleObservacionEstado);
-                            // Inicializar al cargar
-                            toggleObservacionEstado();
-                        </script>
-                    }
-                    <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-save me-2"></i>Guardar</button>
-                        <a href="/Habitaciones" class="btn btn-secondary btn-lg px-4"><i class="fas fa-times me-2"></i>Cancelar</a>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}
+@section Scripts {
+    <script>
+        // Bloqueo ObservacionEstado
+        function toggleObservacionEstado() {
+            var disponible = document.getElementById('Disponible');
+            var obs = document.getElementById('ObservacionEstadoInput');
+            if (disponible && obs) {
+                if (disponible.checked) {
+                    obs.value = '';
+                    obs.setAttribute('readonly', 'readonly');
+                    obs.classList.add('bg-light');
+                } else {
+                    obs.removeAttribute('readonly');
+                    obs.classList.remove('bg-light');
+                }
+            }
+        }
+        document.getElementById('Disponible').addEventListener('change', toggleObservacionEstado);
+        window.addEventListener('DOMContentLoaded', toggleObservacionEstado);
+
+        // Imagen: selector y preview
+        document.getElementById('btnSelectFoto').addEventListener('click', function () {
+            document.getElementById('fileInput').click();
+        });
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            var inputText = document.getElementById('FotoUrlInput');
+            var preview = document.getElementById('previewImg');
+            var noPreview = document.getElementById('noPreviewText');
+            if (file) {
+                inputText.value = file.name;
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    preview.src = ev.target.result;
+                    preview.style.display = 'block';
+                    if (noPreview) noPreview.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                inputText.value = '';
+                preview.src = '#';
+                preview.style.display = 'none';
+                if (noPreview) noPreview.style.display = 'inline';
+            }
+        });
+    </script>
+}
+                          
